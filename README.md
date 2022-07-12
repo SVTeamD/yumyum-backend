@@ -10,7 +10,7 @@ This is a backend setup for SVTeamD.
 ## Installation 
 - Clone the repository using this command.
     ```sh
-    $ git clone --recursive {github url for this repo}
+    $ git clone --recursive https://github.com/SVTeamD/yumyum-backend.git
     ```
     - If you missed `--recursive` option, fetch the frontend submodule using `git clone`
 
