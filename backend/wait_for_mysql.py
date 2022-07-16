@@ -47,7 +47,7 @@ if '__main__' == __name__:
         # "HOST": os.environ["HOSTNAME"],
         # "DB": os.environ["MYSQL_DATABASE"],
         # "PASSWORD": os.environ["MYSQL_ROOT_PASSWORD"],
-        "HOST": "db",
+        "HOST": "mysql",
         "PORT": 3306,
         "DB": "dev_db",
         "USER": "root",
