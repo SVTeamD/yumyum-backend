@@ -3,18 +3,29 @@ from typing import List, Union
 from pydantic import BaseModel
 
 
-# class UserBase(BaseModel):
-#     email: str
+class MenuBase(BaseModel):
+    # id: int
+    ...
+
+class Menu(MenuBase):
+    name: str
+    cost: int
+    photo_url: str
 
 
-# class UserCreate(UserBase):
-#     password: str
+class MenuCreate(MenuBase):
+    name: str
+    cost: int
+    photo_url: str
 
 
-# class User(UserBase):
-#     id: int
-#     is_active: bool
-#     items: List[Item] = []
+class MenuRead(MenuCreate):
+    pass
 
-#     class Config:
-#         orm_mode = True
+
+class MenuDelete(MenuBase):
+    pass
+
+
+    class Config:
+        orm_mode = True
