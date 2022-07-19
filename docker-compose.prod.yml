@@ -1,5 +1,9 @@
 version: "3"
 
+networks:
+  mynet:
+    driver: bridge
+
 services:
   mysql:
     container_name: sem_mysql
@@ -95,6 +99,69 @@ services:
       - ./proxy/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - backend
+
+  node-exporter:
+    container_name: node-exporter
+    image: quay.io/prometheus/node-exporter:latest
+    command:
+      - '--path.rootfs=/host'
+    volumes:
+      - '/:/host:ro,rslave'
+    ports:
+      - 9100:9100
+    expose: 
+      - 9100
+    networks:
+      - mynet
+    pid: host
+    restart: unless-stopped
+
+  cadvisor:
+    container_name: cadvisor
+    image: google/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - 8080:8080
+    networks:
+      - mynet
+    privileged: true
+    restart: unless-stopped
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    ports:
+      - 9090:9090
+    expose:
+      - 9090
+    networks:
+      - mynet
+    restart: always
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+    ports: 
+      - 3000:3000
+    expose:
+      - 3000
+    networks:
+      - mynet
+    restart: always
       
 volumes:
   mysql_data_dev: null
