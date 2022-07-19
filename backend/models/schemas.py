@@ -4,8 +4,8 @@ from pydantic import BaseModel
 
 
 class MenuBase(BaseModel):
-    # id: int
-    ...
+    class Config:
+        orm_mode = True
 
 class Menu(MenuBase):
     name: str
@@ -18,6 +18,8 @@ class MenuCreate(MenuBase):
     cost: int
     photo_url: str
 
+    
+
 
 class MenuRead(MenuCreate):
     pass
@@ -27,5 +29,3 @@ class MenuDelete(MenuBase):
     pass
 
 
-    class Config:
-        orm_mode = True

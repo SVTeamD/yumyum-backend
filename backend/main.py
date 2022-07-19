@@ -6,7 +6,8 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi import UploadFile, File
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
-from models import crud, models, schemas
+from models import models, schemas
+from api import crud
 from models.database import SessionLocal, engine
 
 from aws.bucket import post_bucket

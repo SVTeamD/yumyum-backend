@@ -1,12 +1,12 @@
-from curses import is_term_resized
-from unicodedata import name
 from fastapi import Response
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
 from starlette.responses import Response
 from starlette.status import HTTP_204_NO_CONTENT
 import datetime
-from . import models, schemas
+import sys
+sys.path.append("..")
+from models import models, schemas
 
 
 
@@ -26,7 +26,7 @@ def create_menu(db: Session, menu: schemas.MenuCreate):
     db_menu = models.Menu(name=menu.name,cost=menu.cost, photo_url=menu.photo_url)
     db.add(db_menu)
     db.commit()
-    db.refresh(db_menu)
+    # db.refresh(db_menu)
     return db_menu
 
 
