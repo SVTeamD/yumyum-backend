@@ -13,7 +13,7 @@ from models.database import SessionLocal, engine
 from aws.bucket import post_bucket
 
 models.Base.metadata.create_all(bind=engine)
-
+crud.initialize_category()
 
 app = FastAPI()
 

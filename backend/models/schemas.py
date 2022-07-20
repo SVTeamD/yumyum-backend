@@ -21,7 +21,6 @@ class MenuCreate(MenuBase):
     photo_url: str
     is_active: bool
 
-
 class MenuRead(MenuCreate):
     is_active: bool
 
@@ -32,5 +31,23 @@ class MenuRead(MenuCreate):
 
 class MenuDelete(MenuBase):
     is_active: bool
+
+
+class CategoryCreate(BaseModel):
+    ...
+    
+
+class CategoryRead(CategoryCreate):
+   ...
+
+class StoreCreate(BaseModel):
+    merchant_id: int
+    menu_id: int
+    category_name: str
+    location_id: int
+    name: str
+    photo_url: str
+
+
 
 
