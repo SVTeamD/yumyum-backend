@@ -53,17 +53,17 @@ def read_menu_info(skip: int = 1, limit: int = 10, db: Session = Depends(get_db)
 
 @app.get("/menus/{menu_id}/")
 def read_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
-    menus = crud.get_menu_by_id(db, menu_id=menu_id)
+    menus = crud.get_menu_by_id(db, menu_id = menu_id)
     return menus
 
 
 @app.get("/menus/name/{menu_name}/")
 def read_menu_by_name(menu_name: str, db: Session = Depends(get_db)):
-    menus = crud.get_menu_by_name(db, menu_name=menu_name)
+    menus = crud.get_menu_by_name(db, menu_name = menu_name)
     return menus
 
 
-@app.delete("/menus/{menu_name}")
-def delete_menu_by_name(menu_name: str, db: Session = Depends(get_db)):
-    response = crud.delete_menu(db, menu_name = menu_name)
+@app.delete("/menus/{menu_id}")
+def delete_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_menu_by_id(db, menu_id = menu_id)
     return response.status_code
