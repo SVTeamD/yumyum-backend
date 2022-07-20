@@ -1,4 +1,3 @@
-from operator import mod
 from fastapi import Response
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
@@ -10,7 +9,7 @@ sys.path.append("..")
 from models import models, schemas
 
 def get_menu(db: Session):
-    return db.query(models.Menu).filter(models.Menu.is_active == 1).all()
+    return db.query(models.Menu).filter(models.Menu.is_active == True).all()
 
 
 def get_menu_by_id(db: Session, menu_id: int): 
