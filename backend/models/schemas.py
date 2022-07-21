@@ -13,6 +13,7 @@ class Menu(MenuBase):
     cost: int
     photo_url: str
     is_active: bool
+    is_main_menu: bool
 
 
 class MenuCreate(MenuBase):
@@ -20,14 +21,14 @@ class MenuCreate(MenuBase):
     cost: int
     photo_url: str
     is_active: bool
-
+    is_main_menu: bool
 
 class MenuRead(MenuCreate):
-    is_active: bool
+    pass
 
 
-#class MenuUpdate(MenuBase):
-    # is_active = bool
+class MenuUpdate(MenuBase):
+    is_main_menu: bool
 
 
 class MenuDelete(MenuBase):
