@@ -51,6 +51,11 @@ def read_menu_info(skip: int = 1, limit: int = 10, db: Session = Depends(get_db)
     return menus
 
 
+@app.get("/menus/main", response_model=List[schemas.Menu])
+def read_main_menu(skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
+    menus = crud.get_main_menu(db)
+    return menus
+
 @app.get("/menus/{menu_id}/")
 def read_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
     menus = crud.get_menu_by_id(db, menu_id = menu_id)
@@ -61,6 +66,11 @@ def read_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
 def read_menu_by_name(menu_name: str, db: Session = Depends(get_db)):
     menus = crud.get_menu_by_name(db, menu_name = menu_name)
     return menus
+
+@app.put("/menus/main/{menu_id}")
+def update_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
+    response = crud.update_main_menu_by_id(db, menu_id = menu_id)
+    return response.status_code
 
 
 @app.delete("/menus/{menu_id}")
