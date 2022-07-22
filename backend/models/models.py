@@ -12,28 +12,30 @@ class User(Base):
     __tablename__ = "users"
 
     user_id = Column(Integer, primary_key=True, index=True)  # PK
+    user_type = Column(Boolean)
     name = Column(String(255), index=True)
     gender = Column(String(255), index=True)
     age_range = Column(String(255), index=True)
     phone_num = Column(Integer)
     created_date = Column(Integer)
+    # is_active = Column(Boolean)
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(TIMESTAMP, server_default=text(
         'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
 
-class Customer(Base):
-    __tablename__ = "customers"
+# class Customer(Base):
+#     __tablename__ = "customers"
 
-    customer_id = Column(Integer, primary_key=True, index=True)  # PK
-    user_id = Column(Integer, ForeignKey("users.user_id"), index=True)  # FK1
+#     customer_id = Column(Integer, primary_key=True, index=True)  # PK
+#     user_id = Column(Integer, ForeignKey("users.user_id"), index=True)  # FK1
 
 
-class Merchant(Base):
-    __tablename__ = "merchants"
+# class Merchant(Base):
+#     __tablename__ = "merchants"
 
-    merchant_id = Column(Integer, primary_key=True, index=True)  # PK
-    user_id = Column(Integer, ForeignKey("users.user_id"), index=True)  # FK1
+#     merchant_id = Column(Integer, primary_key=True, index=True)  # PK
+#     user_id = Column(Integer, ForeignKey("users.user_id"), index=True)  # FK1
 
 
 class Menu(Base):

@@ -126,3 +126,88 @@ def read_menu_by_name(menu_name: str, db: Session = Depends(get_db)):
 def delete_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
     response = crud.delete_menu_by_id(db, menu_id=menu_id)
     return response.status_code
+
+# Category
+
+
+@app.post("/categories/", response_model=schemas.Category)
+def create_category_info(category: schemas.CategoryCreate, db: Session = Depends(get_db)):
+    return crud.create_category(db, category=category)
+
+
+@app.get("/categories/{category_id}/")
+def read_category_by_id(category_id: int, db: Session = Depends(get_db)):
+    categories = crud.get_category_by_id(db, category_id=category_id)
+    return categories
+
+
+@app.delete("/categories/{category_id}/")
+def delete_category_by_name(category_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_category(db, category_id=category_id)
+    return response.status_code
+
+# Location
+
+
+@app.post("/locations/", response_model=schemas.Location)
+def create_location_info(location: schemas.LocationCreate, db: Session = Depends(get_db)):
+    return crud.create_location(db, location=location)
+
+
+@app.get("/locations/{location_id}/")
+def read_location_by_id(location_id: int, db: Session = Depends(get_db)):
+    locations = crud.get_location_by_id(db, location_id=location_id)
+    return locations
+
+
+@app.delete("/locations/{location_id}/")
+def delete_location_by_name(location_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_order(db, location_id=location_id)
+    return response.status_code
+
+ # Store
+
+
+@app.post("/customers/{user_id}", response_model=schemas.Customer)
+def create_customer_info(customer: schemas.CustomerCreate, user_id, db: Session = Depends(get_db)):
+    return crud.create_customer(db, user_id=user_id, customer=customer)
+
+# @app.post("/stores/", response_model=schemas.Store)
+# def create_store_info(store: schemas.StoreCreate, db: Session = Depends(get_db)):
+#     return crud.create_store(db, store=store)
+
+
+@app.post("/stores/{merchant_id}/{menu_id}/{category_id}/{location_id}", response_model=schemas.Store)
+def create_store_info(store: schemas.StoreCreate, merchant_id, menu_id, category_id, location_id, db: Session = Depends(get_db)):
+    return crud.create_store(db, merchant_id=merchant_id, menu_id=menu_id, category_id=category_id, location_id=location_id, store=store)
+
+
+@app.get("/stores/{store_id}/")
+def read_store_by_id(store_id: int, db: Session = Depends(get_db)):
+    stores = crud.get_store_by_id(db, store_id=store_id)
+    return stores
+
+
+@app.delete("/stores/{store_id}/")
+def delete_store_by_name(store_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_store(db, store_id=store_id)
+    return response.status_code
+
+# Order
+
+
+@app.post("/orders/", response_model=schemas.Order)
+def create_order_info(order: schemas.OrderCreate, db: Session = Depends(get_db)):
+    return crud.create_order(db, order=order)
+
+
+@app.get("/orders/{order_id}/")
+def read_order_by_id(order_id: int, db: Session = Depends(get_db)):
+    orders = crud.get_order_by_id(db, order_id=order_id)
+    return orders
+
+
+@app.delete("/orders/{order_id}/")
+def delete_order_by_name(order_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_order(db, order_id=order_id)
+    return response.status_code
