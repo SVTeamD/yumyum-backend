@@ -1,5 +1,6 @@
 from typing import List, Union
 
+from decimal import Decimal
 from pydantic import BaseModel
 
 # User
@@ -113,9 +114,118 @@ class MenuRead(MenuCreate):
     is_active: bool
 
 
-# class MenuUpdate(MenuBase):
-    # is_active = bool
-
-
 class MenuDelete(MenuBase):
     is_active: bool
+
+# Category
+
+
+class CategoryBase(BaseModel):
+    category_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class Category(CategoryBase):
+    category_name: str
+
+
+class CategoryCreate(CategoryBase):
+    category_name: str
+
+
+class CategoryRead(CategoryBase):
+    pass
+
+
+class CategoryDelete(CategoryBase):
+    pass
+
+# Location
+
+
+class LocationBase(BaseModel):
+    location_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class Location(LocationBase):
+    pass
+    # latitude: Decimal
+    # longitude: Decimal
+
+
+class LocationCreate(Location):
+    pass
+
+
+class LocationRead(Location):
+    pass
+
+
+class LocationDelete(LocationBase):
+    pass
+
+# Store
+
+
+class StoreBase(BaseModel):
+
+    class Config:
+        orm_mode = True
+
+
+class Store(StoreBase):
+    store_id: int
+    merchant_id: int
+    menu_id: int
+    category_id: int
+    location_id: int
+
+    store_name: str
+    store_photo_url: str
+
+
+class StoreCreate(StoreBase):
+    store_name: str
+    store_photo_url: str
+
+
+class StoreRead(StoreBase):
+    pass
+
+
+class StoreDelete(StoreBase):
+    pass
+
+# Order
+
+
+class OrderBase(BaseModel):
+    order_id: int
+    customer_id: int
+    store_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class Order(OrderBase):
+    order_datetime: int
+    order_is_takeout: bool
+    order_cost: int
+
+
+class OrderCreate(Order):
+    pass
+
+
+class OrderRead(Order):
+    pass
+
+
+class OrderDelete(Order):
+    pass
