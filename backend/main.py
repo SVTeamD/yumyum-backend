@@ -41,24 +41,24 @@ async def upload(file_object: UploadFile=File(...)):
 
 
 
-@app.post("/store/", response_model=schemas.Store)
+@app.post("/stores/", response_model=schemas.Store)
 def create_store_info(store: schemas.StoreCreate, db: Session = Depends(get_db)):
     return crud.create_store(db, store = store)
 
 
-@app.get("/store/", response_model = List[schemas.Store])
+@app.get("/stores/", response_model = List[schemas.Store])
 def read_store_info(skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
     stores = crud.get_store(db)
     return stores
 
-@app.post("/menus/", response_model = schemas.Menu) # menu api
+@app.post("/menus/", response_model = schemas.MenuCreate) # menu api
 def create_menu_info(menu: schemas.MenuCreate, db: Session = Depends(get_db)):
     return crud.create_menu(db, menu = menu)
 
 
-@app.get("/menus/", response_model = List[schemas.Menu])
-def read_menu_info(skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
-    menus = crud.get_menu(db)
+@app.get("/stores/{store_id}/menus", response_model = List[schemas.Menu])
+def read_menu_info(store_id, skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
+    menus = crud.get_store_menu(db, store_id = store_id)
     return menus
 
 

@@ -2,30 +2,24 @@ from typing import List, Union
 
 from pydantic import BaseModel
 
-
-
-
-
 class StoreBase(BaseModel): # 가게 테이블
-    id: int
     class Config:
         orm_mode = True
 
 
 class Store(StoreBase):
-    name = str
+    name: str
 
 
 class StoreCreate(StoreBase):
-    name = str
+    name: str
 
 
-class StoreRead(StoreCreate):
-    pass
+class StoreRead(StoreBase):
+    name: str
 
 
 class MenuBase(BaseModel): # Menu 테이블
-    id: int
     class Config:
         orm_mode = True
 
@@ -38,14 +32,13 @@ class Menu(MenuBase):
 
 
 class MenuCreate(MenuBase):
+    store_id: int
     name: str
     cost: int
     photo_url: str
-    is_active: bool
-    is_main_menu: bool
 
 class MenuRead(MenuCreate):
-    pass
+    id: str
 
 
 class MenuUpdate(MenuBase):
