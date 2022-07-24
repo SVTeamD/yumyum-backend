@@ -36,55 +36,55 @@ class UserRead(User):
 class UserDelete(UserBase):
     pass
 
-# Customer
+# # Customer
 
 
-class CustomerBase(BaseModel):
+# class CustomerBase(BaseModel):
 
-    class Config:
-        orm_mode = True
-
-
-class Customer(CustomerBase):
-    user_id: int
-    customer_id: int
+#     class Config:
+#         orm_mode = True
 
 
-class CustomerCreate(CustomerBase):
-    pass
+# class Customer(CustomerBase):
+#     user_id: int
+#     customer_id: int
 
 
-class CustomerRead(CustomerBase):
-    pass
+# class CustomerCreate(CustomerBase):
+#     pass
 
 
-class CustomerDelete(Customer):
-    pass
-
-# Merchant
+# class CustomerRead(CustomerBase):
+#     pass
 
 
-class MerchantBase(BaseModel):
+# class CustomerDelete(Customer):
+#     pass
 
-    class Config:
-        orm_mode = True
-
-
-class Merchant(MerchantBase):
-    user_id: int
-    merchant_id: int
+# # Merchant
 
 
-class MerchantCreate(MerchantBase):
-    pass
+# class MerchantBase(BaseModel):
+
+#     class Config:
+#         orm_mode = True
 
 
-class MerchantRead(MerchantBase):
-    pass
+# class Merchant(MerchantBase):
+#     user_id: int
+#     merchant_id: int
 
 
-class MerchantDelete(Merchant):
-    pass
+# class MerchantCreate(MerchantBase):
+#     pass
+
+
+# class MerchantRead(MerchantBase):
+#     pass
+
+
+# class MerchantDelete(Merchant):
+#     pass
 
 # Menu
 

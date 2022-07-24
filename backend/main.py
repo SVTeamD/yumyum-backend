@@ -58,43 +58,43 @@ def delete_user_by_id(user_id: str, db: Session = Depends(get_db)):
     response = crud.delete_user(db, user_id=user_id)
     return response.status_code
 
-# Customer
+# # Customer
 
 
-@app.post("/customers/{user_id}", response_model=schemas.Customer)
-def create_customer_info(customer: schemas.CustomerCreate, user_id, db: Session = Depends(get_db)):
-    return crud.create_customer(db, user_id=user_id, customer=customer)
+# @app.post("/customers/{user_id}", response_model=schemas.Customer)
+# def create_customer_info(customer: schemas.CustomerCreate, user_id, db: Session = Depends(get_db)):
+#     return crud.create_customer(db, user_id=user_id, customer=customer)
 
 
-@app.get("/customers/{user_id}/")
-def read_customer_by_id(user_id: int, db: Session = Depends(get_db)):
-    customers = crud.get_customer_by_id(db, user_id=user_id)
-    return customers
+# @app.get("/customers/{user_id}/")
+# def read_customer_by_id(user_id: int, db: Session = Depends(get_db)):
+#     customers = crud.get_customer_by_id(db, user_id=user_id)
+#     return customers
 
 
-@app.delete("/customers/delete/{customer_id}/")
-def delete_customer_by_id(customer_id: str, db: Session = Depends(get_db)):
-    response = crud.delete_customer(db, customer_id=customer_id)
-    return response.status_code
+# @app.delete("/customers/delete/{customer_id}/")
+# def delete_customer_by_id(customer_id: str, db: Session = Depends(get_db)):
+#     response = crud.delete_customer(db, customer_id=customer_id)
+#     return response.status_code
 
-# Merchant
-
-
-@app.post("/merchants/{user_id}", response_model=schemas.Merchant)
-def create_merchant_info(merchant: schemas.MerchantCreate, user_id, db: Session = Depends(get_db)):
-    return crud.create_merchant(db, user_id=user_id, merchant=merchant)
+# # Merchant
 
 
-@app.get("/merchants/{user_id}/")
-def read_merchant_by_id(user_id: int, db: Session = Depends(get_db)):
-    merchants = crud.get_merchant_by_id(db, user_id=user_id)
-    return merchants
+# @app.post("/merchants/{user_id}", response_model=schemas.Merchant)
+# def create_merchant_info(merchant: schemas.MerchantCreate, user_id, db: Session = Depends(get_db)):
+#     return crud.create_merchant(db, user_id=user_id, merchant=merchant)
 
 
-@app.delete("/merchants/delete/{merchant_id}/")
-def delete_merchant_by_id(merchant_id: str, db: Session = Depends(get_db)):
-    response = crud.delete_merchant(db, merchant_id=merchant_id)
-    return response.status_code
+# @app.get("/merchants/{user_id}/")
+# def read_merchant_by_id(user_id: int, db: Session = Depends(get_db)):
+#     merchants = crud.get_merchant_by_id(db, user_id=user_id)
+#     return merchants
+
+
+# @app.delete("/merchants/delete/{merchant_id}/")
+# def delete_merchant_by_id(merchant_id: str, db: Session = Depends(get_db)):
+#     response = crud.delete_merchant(db, merchant_id=merchant_id)
+#     return response.status_code
 
 # Menu
 

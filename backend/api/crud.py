@@ -38,59 +38,59 @@ def delete_user(db: Session, user_id: int):
     db.commit()
     return Response(status_code=HTTP_204_NO_CONTENT)
 
-# Customer
+# # Customer
 
 
-def get_customer(db: Session, skip: int = 1, limit: int = 10):
-    return db.query(models.Customer).offset(skip).limit(limit).all()
+# def get_customer(db: Session, skip: int = 1, limit: int = 10):
+#     return db.query(models.Customer).offset(skip).limit(limit).all()
 
 
-def get_customer_by_id(db: Session, user_id: int):
-    return db.query(models.Customer).filter(models.Customer.user_id == user_id).first()
+# def get_customer_by_id(db: Session, user_id: int):
+#     return db.query(models.Customer).filter(models.Customer.user_id == user_id).first()
 
 
-def create_customer(db: Session, customer: schemas.CustomerCreate, user_id):
-    db_user = db.query(models.User).filter(
-        models.User.user_id == user_id).first()
-    db_customer = models.Customer(user_id=db_user.user_id)
-    db.add(db_customer)
-    db.commit()
-    return db_customer
+# def create_customer(db: Session, customer: schemas.CustomerCreate, user_id):
+#     db_user = db.query(models.User).filter(
+#         models.User.user_id == user_id).first()
+#     db_customer = models.Customer(user_id=db_user.user_id)
+#     db.add(db_customer)
+#     db.commit()
+#     return db_customer
 
 
-def delete_customer(db: Session, customer_id: int):
-    customer = db.query(models.customer).filter_by(
-        models.Customer.customer_id == customer_id).first()
-    db.delete(customer)
-    db.commit()
-    return Response(status_code=HTTP_204_NO_CONTENT)
+# def delete_customer(db: Session, customer_id: int):
+#     customer = db.query(models.customer).filter_by(
+#         models.Customer.customer_id == customer_id).first()
+#     db.delete(customer)
+#     db.commit()
+#     return Response(status_code=HTTP_204_NO_CONTENT)
 
-# Merchant
-
-
-def get_merchant(db: Session, skip: int = 1, limit: int = 10):
-    return db.query(models.Merchant).offset(skip).limit(limit).all()
+# # Merchant
 
 
-def get_merchant_by_id(db: Session, merchant_id: int):
-    return db.query(models.Merchant).filter(models.Merchant.merchant_id == merchant_id).first()
+# def get_merchant(db: Session, skip: int = 1, limit: int = 10):
+#     return db.query(models.Merchant).offset(skip).limit(limit).all()
 
 
-def create_merchant(db: Session, merchant: schemas.MerchantCreate, user_id):
-    db_user = db.query(models.User).filter(
-        models.User.user_id == user_id).first()
-    db_merchant = models.Merchant(user_id=db_user.user_id)
-    db.add(db_merchant)
-    db.commit()
-    return db_merchant
+# def get_merchant_by_id(db: Session, merchant_id: int):
+#     return db.query(models.Merchant).filter(models.Merchant.merchant_id == merchant_id).first()
 
 
-def delete_merchant(db: Session, merchant_id: int):
-    merchant = db.query(models.merchant).filter_by(
-        models.Merchant.merchant_id == merchant_id).first()
-    db.delete(merchant)
-    db.commit()
-    return Response(status_code=HTTP_204_NO_CONTENT)
+# def create_merchant(db: Session, merchant: schemas.MerchantCreate, user_id):
+#     db_user = db.query(models.User).filter(
+#         models.User.user_id == user_id).first()
+#     db_merchant = models.Merchant(user_id=db_user.user_id)
+#     db.add(db_merchant)
+#     db.commit()
+#     return db_merchant
+
+
+# def delete_merchant(db: Session, merchant_id: int):
+#     merchant = db.query(models.merchant).filter_by(
+#         models.Merchant.merchant_id == merchant_id).first()
+#     db.delete(merchant)
+#     db.commit()
+#     return Response(status_code=HTTP_204_NO_CONTENT)
 
 # Menu
 
@@ -197,14 +197,6 @@ def get_store(db: Session, skip: int = 1, limit: int = 10):
 def get_store_by_id(db: Session, store_id, id: int):
     return db.query(models.Store).filter(models.Store.store_id == store_id).first()
 
-
-# def create_customer(db: Session, customer: schemas.CustomerCreate, user_id):
-#     db_user = db.query(models.User).filter(
-#         models.User.user_id == user_id).first()
-#     db_customer = models.Customer(user_id=db_user.user_id)
-#     db.add(db_customer)
-#     db.commit()
-#     return db_customer
 
 def create_store(db: Session, store: schemas.StoreCreate, location: schemas.LocationCreate,
                  merchant_id, menu_id, category_id):
