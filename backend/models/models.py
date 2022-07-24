@@ -11,10 +11,10 @@ from sqlalchemy import func
 from sqlalchemy.types import UserDefinedType, Float
 
 
-class EasyGeometry(UserDefinedType):
+class Coordinates(UserDefinedType):
 
     def get_col_spec(self):
-        return "GEOMETRY"
+        return "Coordinates"
 
     def bind_expression(self, bindvalue):
         return func.ST_GeomFromText(bindvalue, type_=self)
@@ -51,7 +51,7 @@ class Location(Base):
     __tablename__ = "locations"
 
     id = Column(Integer, primary_key=True, index=True)
-    points = Column(EasyGeometry)
+    points = Column(Coordinates, nullable=False)
 
 
 
