@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> UserCusMer
 from enum import Enum
 from typing import Tuple
 from pydantic import BaseModel
@@ -30,11 +34,9 @@ class UserDelete(UserBase):
 
 # location
 
-
 class LocationBase(BaseModel):
     class Config:
         orm_mode = True
-
 
 class Location(LocationBase):  # 위치 테이블
     points: Tuple[float, float]
@@ -66,7 +68,6 @@ class Category(str, Enum):
 
 # store
 
-
 class Store(StoreBase):
     id: str
     user_id: int
@@ -85,12 +86,10 @@ class StoreCreate(StoreBase):
     description: str
     photo_url: str
 
-
 class StoreRead(StoreCreate):
     id: str
 
 # menu
-
 
 class MenuBase(BaseModel):
     class Config:
@@ -104,21 +103,17 @@ class Menu(MenuBase):
     is_active: bool
     is_main_menu: bool
 
-
 class MenuCreate(MenuBase):
     store_id: int
     name: str
     cost: int
     photo_url: str
 
-
 class MenuRead(MenuCreate):
     id: str
 
-
 class MenuUpdate(MenuBase):
     is_main_menu: bool
-
 
 class MenuDelete(MenuBase):
     is_active: bool
