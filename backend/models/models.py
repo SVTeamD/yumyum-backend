@@ -1,17 +1,3 @@
-# class User(Base):
-#     __tablename__ = "users"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     name = Column(String(255), index=True)
-#     gender = Column(String(255), index=True)
-#     age_range = Column(String(255), index=True)
-#     phone_num = Column(Integer)
-#     created_date = Column(Integer)
-#     is_active = Column(Boolean, nullable=False, default=True)
-#     created_at = Column(TIMESTAMP, server_default=func.now())
-#     updated_at = Column(TIMESTAMP, server_default=text(
-#         'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.types import TIMESTAMP

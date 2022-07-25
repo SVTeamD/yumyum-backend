@@ -1,33 +1,3 @@
-# # user
-
-
-# def get_user_by_id(db: Session, user_id: int):
-#     return db.query(models.User).filter(models.User.id == user_id).first()
-
-
-# def create_user(db: Session, user: schemas.UserCreate):  # 유저 생성
-#     db_user = models.User(name=user.name,
-#                           gender=user.gender,
-#                           age_range=user.age_range,
-#                           phone_num=user.phone_num)
-#     db.add(db_user)
-#     db.commit()
-#     return db_user
-
-
-# def delete_user_by_id(db: Session, user_id: int):
-#     user = db.query(models.User).filter(models.User.id ==
-#                                         user_id).update({'is_active': False})
-#     db.commit()
-#     return Response(status_code=HTTP_204_NO_CONTENT)
-
-from models import models, schemas
-from fastapi import Response
-from sqlalchemy.orm import Session
-from starlette.responses import Response
-from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
-
-
 # user
 
 
@@ -85,6 +55,7 @@ def delete_user_by_id(db: Session, user_id: int):
 # store
 
 
+
 def get_store_menu(db: Session, store_id):  # 메뉴
     menu = db.query(models.Menu).join(models.Store).filter(
         models.Store.id == store_id).filter(models.Menu.is_active == True).all()
@@ -98,7 +69,6 @@ def delete_store_by_id(db: Session, store_id: int):
     return Response(status_code=HTTP_204_NO_CONTENT)
 
 # menu
-
 
 def get_main_menu(db: Session):
     return db.query(models.Menu).filter(models.Menu.is_active == True).filter(models.Menu.is_main_menu == True).all()
@@ -175,5 +145,6 @@ def create_order(db: Session, order: schemas.OrderCreate):
 def delete_order_by_id(db: Session, order_id: int):
     order = db.query(models.Order).filter(models.Order.id ==
                                           order_id).update({'is_active': False})
+
     db.commit()
     return Response(status_code=HTTP_204_NO_CONTENT)

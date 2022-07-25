@@ -33,6 +33,7 @@ from aws.bucket import post_bucket
 models.Base.metadata.create_all(bind=engine)
 
 
+
 app = FastAPI()
 
 
@@ -43,7 +44,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
 
 @app.get("/")
 async def main():
@@ -57,7 +57,6 @@ async def upload(file_object: UploadFile = File(...)):
     post_bucket(content, file_object.filename)
     return {"filename": file_object.filename}
 
-
 # user
 
 @app.post("/users/", response_model=schemas.User)
@@ -70,6 +69,10 @@ def read_user_by_id(user_id: int, db: Session = Depends(get_db)):
     users = crud.get_user_by_id(db, user_id=user_id)
     return users
 
+@app.get("/stores/", response_model = List[schemas.Store])
+def read_store_info(db: Session = Depends(get_db)):
+    stores = crud.get_store(db)
+    return stores
 
 @app.delete("/users/{user_id}")
 def delete_user_by_id(user_id: int, db: Session = Depends(get_db)):
@@ -94,6 +97,16 @@ def read_store_info(db: Session = Depends(get_db)):
 def read_menu_info(store_id, skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
     menus = crud.get_store_menu(db, store_id=store_id)
     return menus
+
+@app.delete("/stores/{store_id}")
+def delete_store_by_id(store_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_store_by_id(db, store_id = store_id)
+    return response.status_code
+
+
+@app.post("/menus/", response_model = schemas.MenuCreate) # menu api
+def create_menu_info(menu: schemas.MenuCreate, db: Session = Depends(get_db)):
+    return crud.create_menu(db, menu = menu)
 
 
 @app.delete("/stores/{store_id}")
