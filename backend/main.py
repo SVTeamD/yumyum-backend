@@ -72,10 +72,20 @@ async def upload(file_object: UploadFile = File(...)):
     post_bucket(content, file_object.filename)
     return {"filename": file_object.filename}
 
+# user
+
 
 @app.post("/users/", response_model=schemas.User)  # 유저 생성
 def create_user_info(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db, user=user)
+
+
+@app.get("/users/{user_id}/")
+def read_user_by_id(user_id: int, db: Session = Depends(get_db)):
+    users = crud.get_user_by_id(db, user_id=user_id)
+    return users
+
+# store
 
 
 @app.post("/stores/", response_model=schemas.Store)
@@ -93,6 +103,8 @@ def read_store_info(db: Session = Depends(get_db)):
 def read_menu_info(store_id, skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
     menus = crud.get_store_menu(db, store_id=store_id)
     return menus
+
+# menu
 
 
 @app.post("/menus/", response_model=schemas.MenuCreate)  # menu api

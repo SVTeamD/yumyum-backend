@@ -108,12 +108,23 @@ from fastapi import Response
 from sqlalchemy.orm import Session
 from starlette.responses import Response
 
+# user
+
 
 def create_user(db: Session, user: schemas.UserCreate):  # 유저 생성
     db_user = models.User()
     db.add(db_user)
     db.commit()
     return db_user
+
+
+def delete_user_by_id(db: Session, user_id: int):
+    user = db.query(models.User).filter(models.User.id ==
+                                        user_id).update({'is_active': False})
+    db.commit()
+    return Response(status_code=HTTP_204_NO_CONTENT)
+
+# store
 
 
 def get_store(db: Session):  # 가게
@@ -141,6 +152,8 @@ def get_store_menu(db: Session, store_id):  # 메뉴
     menu = db.query(models.Menu).join(models.Store).filter(
         models.Store.id == store_id).filter(models.Menu.is_active == True).all()
     return menu
+
+# menu
 
 
 def get_main_menu(db: Session):
