@@ -30,9 +30,11 @@ class UserDelete(UserBase):
 
 # location
 
+
 class LocationBase(BaseModel):
     class Config:
         orm_mode = True
+
 
 class Location(LocationBase):  # 위치 테이블
     points: Tuple[float, float]
@@ -64,6 +66,7 @@ class Category(str, Enum):
 
 # store
 
+
 class Store(StoreBase):
     id: str
     user_id: int
@@ -82,22 +85,25 @@ class StoreCreate(StoreBase):
     description: str
     photo_url: str
 
+
 class StoreRead(StoreCreate):
     id: str
 
 # menu
+
 
 class MenuBase(BaseModel):
     class Config:
         orm_mode = True
 
 
-class Menu(MenuBase): # 메뉴
+class Menu(MenuBase):  # 메뉴
     name: str
     cost: int
     photo_url: str
     is_active: bool
     is_main_menu: bool
+
 
 class MenuCreate(MenuBase):
     store_id: int
@@ -105,19 +111,23 @@ class MenuCreate(MenuBase):
     cost: int
     photo_url: str
 
+
 class MenuRead(MenuCreate):
     id: str
 
+
 class MenuUpdate(MenuBase):
     is_main_menu: bool
+
 
 class MenuDelete(MenuBase):
     is_active: bool
 
 
-class OrderBase(BaseModel): # 주문
+class OrderBase(BaseModel):  # 주문
     class Config:
         orm_mode = True
+
 
 class Order(OrderBase):
     user_id: int
@@ -126,6 +136,7 @@ class Order(OrderBase):
     is_takeout: bool
     cost: int
     is_active: bool
+
 
 class OrderCreate(OrderBase):
     user_id: int
@@ -136,6 +147,7 @@ class OrderCreate(OrderBase):
 
 class OrderRead(OrderCreate):
     int: str
+
 
 class OrderDelete(OrderBase):
     is_active: bool

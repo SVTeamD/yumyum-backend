@@ -5,7 +5,6 @@ from starlette.responses import Response
 from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
 
-
 # user
 
 
@@ -67,7 +66,6 @@ def delete_user_by_id(db: Session, user_id: int):
 # store
 
 
-
 def get_store_menu(db: Session, store_id):  # 메뉴
     menu = db.query(models.Menu).join(models.Store).filter(
         models.Store.id == store_id).filter(models.Menu.is_active == True).all()
@@ -81,6 +79,7 @@ def delete_store_by_id(db: Session, store_id: int):
     return Response(status_code=HTTP_204_NO_CONTENT)
 
 # menu
+
 
 def get_main_menu(db: Session):
     return db.query(models.Menu).filter(models.Menu.is_active == True).filter(models.Menu.is_main_menu == True).all()
@@ -128,7 +127,7 @@ def delete_menu_by_id(db: Session, menu_id: int):
     return Response(status_code=HTTP_204_NO_CONTENT)
 
 
-def create_order(db: Session, order: schemas.OrderCreate): # 주문
+def create_order(db: Session, order: schemas.OrderCreate):  # 주문
     db_order = models.Order(user_id=order.user_id,
                             store_id=order.store_id,
                             datetime=order.datetime,
@@ -141,6 +140,7 @@ def create_order(db: Session, order: schemas.OrderCreate): # 주문
 
 def get_order(db: Session):  
     return db.query(models.Order).filter(models.Order.is_active == True).all()
+
 
 
 def get_order_by_id(db: Session, order_id: int):
@@ -169,10 +169,10 @@ def get_order_by_store_id(db: Session, store_id):  # 주문
     else:
         return "삭제된 주문입니다!"
 
+
 def delete_order_by_id(db: Session, order_id: int):
     order = db.query(models.Order).filter(models.Order.id ==
                                           order_id).update({'is_active': False})
 
     db.commit()
     return Response(status_code=HTTP_204_NO_CONTENT)
-
