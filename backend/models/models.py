@@ -103,5 +103,11 @@ class Menu(Base):
     is_active = Column(Boolean, nullable=False, default=True)
     is_main_menu = Column(Boolean, nullable=False, default=False)
     created_at = Column(TIMESTAMP, server_default=func.now())
+<<<<<<< HEAD
     updated_at = Column(TIMESTAMP, server_default=text(
         'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+=======
+    updated_at = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+    is_active = Column(Boolean, nullable=False)
+    is_main_menu = Column(Boolean, nullable=False)
+>>>>>>> UserCusMer

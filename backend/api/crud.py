@@ -1,6 +1,5 @@
 # # User
 
-
 # def get_user(db: Session, skip: int = 1, limit: int = 10):
 #     return db.query(models.User).offset(skip).limit(limit).all()
 
@@ -160,9 +159,14 @@ def get_main_menu(db: Session):
     return db.query(models.Menu).filter(models.Menu.is_active == True).filter(models.Menu.is_main_menu == True).all()
 
 
+def get_main_menu(db: Session):
+    return db.query(models.Menu).filter(models.Menu.is_active == True).filter(models.Menu.is_main_menu == True).all()
+
+
 def get_menu_by_id(db: Session, menu_id: int):
     menu = db.query(models.Menu).filter(models.Menu.is_active ==
                                         True).filter(models.Menu.id == menu_id).first()
+
     if (menu):
         return menu
     else:
@@ -186,6 +190,13 @@ def create_menu(db: Session, menu: schemas.MenuCreate):
     db.add(db_menu)
     db.commit()
     return db_menu
+
+
+def update_main_menu_by_id(db: Session, menu_id: int):
+    menu = db.query(models.Menu).filter(models.Menu.id ==
+                                        menu_id).update({'is_main_menu': True})
+    db.commit()
+    return Response(status_code=HTTP_201_CREATED)
 
 
 def update_main_menu_by_id(db: Session, menu_id: int):
