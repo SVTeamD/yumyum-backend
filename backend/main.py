@@ -130,36 +130,31 @@ def update_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
 
 @app.delete("/menus/{menu_id}")
 def delete_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
-    response = crud.delete_menu_by_id(db, menu_id=menu_id)
+    response = crud.delete_menu_by_id(db, menu_id = menu_id)
     return response.status_code
 
-# order
-
-
-@app.post("/orders/", response_model=schemas.OrderCreate)
+@app.post("/orders/", response_model = schemas.OrderCreate) # order
 def create_order_info(order: schemas.OrderCreate, db: Session = Depends(get_db)):
-    return crud.create_order(db, order=order)
+    return crud.create_order(db, order = order)
 
-
-@app.get("/orders/main", response_model=List[schemas.Order])
-def read_main_order(skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
-    orders = crud.get_main_order(db)
+@app.get("/orders/", response_model=List[schemas.Order])
+def read_order_info(skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
+    orders = crud.get_order(db)
     return orders
 
-
-@app.get("/orders/{order_id}/")
-def read_order_by_id(order_id: int, db: Session = Depends(get_db)):
-    orders = crud.get_order_by_id(db, order_id=order_id)
+@app.get("/users/{user_id}/orders", response_model = List[schemas.Order])
+def read_user_order_info(user_id, skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
+    orders = crud.get_user_order(db, user_id = user_id)
     return orders
 
-
-@app.put("/orders/main/{order_id}")
-def update_order_by_id(order_id: int, db: Session = Depends(get_db)):
-    response = crud.update_main_order_by_id(db, order_id=order_id)
-    return response.status_code
+@app.get("/stores/{store_id}/orders", response_model = List[schemas.Order])
+def read_store_menu_info(store_id, skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
+    orders = crud.get_store_menu(db, store_id = store_id)
+    return orders 
 
 
 @app.delete("/orders/{order_id}")
 def delete_order_by_id(order_id: int, db: Session = Depends(get_db)):
     response = crud.delete_order_by_id(db, order_id=order_id)
     return response.status_code
+

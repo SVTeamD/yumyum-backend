@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from models import models, schemas
 from fastapi import Response
 from sqlalchemy.orm import Session
@@ -6,8 +5,7 @@ from starlette.responses import Response
 from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
 
-=======
->>>>>>> UserCusMer
+
 # user
 
 
@@ -125,23 +123,8 @@ def delete_menu_by_id(db: Session, menu_id: int):
     db.commit()
     return Response(status_code=HTTP_204_NO_CONTENT)
 
-# order
 
-
-def get_main_order(db: Session):
-    return db.query(models.Order).filter(models.Order.is_active == True).filter(models.Order.is_main_order == True).all()
-
-
-def get_order_by_id(db: Session, order_id: int):
-    order = db.query(models.Order).filter(models.Order.is_active ==
-                                          True).filter(models.Order.id == order_id).first()
-    if (order):
-        return order
-    else:
-        return "삭제된 주문입니다!"
-
-
-def create_order(db: Session, order: schemas.OrderCreate):
+def create_order(db: Session, order: schemas.OrderCreate): # 주문
     db_order = models.Order(user_id=order.user_id,
                             store_id=order.store_id,
                             datetime=order.datetime,
@@ -152,9 +135,23 @@ def create_order(db: Session, order: schemas.OrderCreate):
     return db_order
 
 
+def get_order(db: Session):  
+    return db.query(models.Order).all()
+
+def get_user_order(db: Session, user_id):  # 주문
+    order = db.query(models.Order).join(models.User).filter(
+        models.User.id == user_id).filter(models.Order.is_active == True).all()
+    return order
+
+def get_store_order(db: Session, store_id):  # 주문
+    order = db.query(models.Order).join(models.Store).filter(
+        models.Store.id == store_id).filter(models.Order.is_active == True).all()
+    return order
+
 def delete_order_by_id(db: Session, order_id: int):
     order = db.query(models.Order).filter(models.Order.id ==
                                           order_id).update({'is_active': False})
 
     db.commit()
     return Response(status_code=HTTP_204_NO_CONTENT)
+

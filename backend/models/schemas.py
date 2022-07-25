@@ -1,10 +1,7 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> UserCusMer
 from enum import Enum
 from typing import Tuple
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class UserBase(BaseModel):  # 사용자 테이블
@@ -96,7 +93,7 @@ class MenuBase(BaseModel):
         orm_mode = True
 
 
-class Menu(MenuBase):
+class Menu(MenuBase): # 메뉴
     name: str
     cost: int
     photo_url: str
@@ -118,33 +115,27 @@ class MenuUpdate(MenuBase):
 class MenuDelete(MenuBase):
     is_active: bool
 
-# order
 
-
-class OrderBase(BaseModel):
-
+class OrderBase(BaseModel): # 주문
     class Config:
         orm_mode = True
 
-
 class Order(OrderBase):
-    datetime: int
-    is_takeout: bool
-    cost: int
-
-
-class OrderCreate(Order):
     user_id: int
     store_id: int
-    datetime: int
+    datetime: datetime
     is_takeout: bool
     cost: int
+    is_active: bool
 
+class OrderCreate(OrderBase):
+    user_id: int
+    store_id: int
+    datetime: datetime
+    is_takeout: bool
 
 class OrderRead(OrderCreate):
-    created_at: str
-    updated_at: str
-
+    int: str
 
 class OrderDelete(OrderBase):
     is_active: bool
