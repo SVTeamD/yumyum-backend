@@ -1,26 +1,3 @@
-# # user
-
-
-# def get_user_by_id(db: Session, user_id: int):
-#     return db.query(models.User).filter(models.User.id == user_id).first()
-
-
-# def create_user(db: Session, user: schemas.UserCreate):  # 유저 생성
-#     db_user = models.User(name=user.name,
-#                           gender=user.gender,
-#                           age_range=user.age_range,
-#                           phone_num=user.phone_num)
-#     db.add(db_user)
-#     db.commit()
-#     return db_user
-
-
-# def delete_user_by_id(db: Session, user_id: int):
-#     user = db.query(models.User).filter(models.User.id ==
-#                                         user_id).update({'is_active': False})
-#     db.commit()
-#     return Response(status_code=HTTP_204_NO_CONTENT)
-
 from models import models, schemas
 from fastapi import Response
 from sqlalchemy.orm import Session
@@ -164,9 +141,9 @@ def get_order_by_id(db: Session, order_id: int):
 def create_order(db: Session, order: schemas.OrderCreate):
     db_order = models.Order(user_id=order.user_id,
                             store_id=order.store_id,
-                            order_datetime=order.order_datetime,
-                            order_is_takeout=order.order_is_takeout,
-                            order_cost=order.order_cost)
+                            datetime=order.datetime,
+                            is_takeout=order.is_takeout,
+                            cost=order.cost)
     db.add(db_order)
     db.commit()
     return db_order

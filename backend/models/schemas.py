@@ -1,55 +1,5 @@
-# # User
-
-
-# class UserBase(BaseModel):
-#     user_id: int
-
-#     class Config:
-#         orm_mode = True
-
-
-# class User(UserBase):
-#     name: str
-#     gender: str
-#     age_range: str
-#     phone_num: str
-#     # created_at: str
-#     # updated_at: str
-
-
-# class UserCreate(UserBase):
-#     name: str
-#     gender: str
-#     age_range: str
-#     phone_num: str
-
-
-# class UserRead(User):
-#     pass
-
-
-# class UserDelete(UserBase):
-#     pass
-
-# ㅡㅡㅡㅡㅡㅡ
-# class UserBase(BaseModel):  # 사용자 테이블
-#     class Config:
-#         orm_mode = True
-
-
-# class User(UserBase):
-#     pass
-
-
-# class UserCreate(UserBase):
-#     name: str
-#     gender: str
-#     age_range: str
-#     phone_num: str
-
 from enum import Enum
 from typing import Tuple
-from xmlrpc.client import Boolean
 from pydantic import BaseModel
 
 
@@ -183,17 +133,17 @@ class OrderBase(BaseModel):
 
 
 class Order(OrderBase):
-    order_datetime: int
-    order_is_takeout: bool
-    order_cost: int
+    datetime: int
+    is_takeout: bool
+    cost: int
 
 
 class OrderCreate(Order):
     user_id: int
     store_id: int
-    order_datetime: int
-    order_is_takeout: bool
-    order_cost: int
+    datetime: int
+    is_takeout: bool
+    cost: int
 
 
 class OrderRead(OrderCreate):

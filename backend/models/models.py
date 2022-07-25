@@ -124,9 +124,9 @@ class Order(Base):
     id = Column(Integer, primary_key=True, index=True)  # PK
     user_id = Column(Integer, ForeignKey(User.id), index=True)  # FK1
     store_id = Column(Integer, ForeignKey(Store.id), index=True)  # FK2
-    order_datetime = Column(Integer)
-    order_is_takeout = Column(Boolean)
-    order_cost = Column(Integer)
+    datetime = Column(Integer)
+    is_takeout = Column(Boolean)
+    cost = Column(Integer)
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(TIMESTAMP, server_default=text(

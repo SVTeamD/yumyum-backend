@@ -1,21 +1,3 @@
-# user
-
-# @app.post("/users/", response_model=schemas.User)  # 유저 생성
-# def create_user_info(user: schemas.UserCreate, db: Session = Depends(get_db)):
-#     return crud.create_user(db, user=user)
-
-
-# @app.get("/users/{user_id}/")
-# def read_user_by_id(user_id: int, db: Session = Depends(get_db)):
-#     users = crud.get_user_by_id(db, user_id=user_id)
-#     return users
-
-
-# @app.delete("/users/{user_id}")
-# def delete_user_by_id(user_id: int, db: Session = Depends(get_db)):
-#     response = crud.delete_user_by_id(db, user_id=user_id)
-#     return response.status_code
-
 from typing import Union
 import uuid
 
