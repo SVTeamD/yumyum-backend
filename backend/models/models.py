@@ -1,98 +1,107 @@
-from pydantic import BaseModel
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DECIMAL
-from decimal import Decimal
-from sqlalchemy.orm import relationship
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy.types import TIMESTAMP
 from sqlalchemy.sql import text, func
+from sqlalchemy.dialects.mysql import ENUM
 
 
 from .database import Base
+
+from sqlalchemy import func
+from sqlalchemy.types import UserDefinedType, Float
+
+
+class Coordinates(UserDefinedType):
+
+    def get_col_spec(self):
+        return "Coordinates"
+
+    def bind_expression(self, bindvalue):
+        return func.ST_GeomFromText(bindvalue, type_=self)
+
+    def column_expression(self, col):
+        return func.ST_AsText(col, type_=self)
+
+    def bind_processor(self, dialect):
+        def process(value):
+            if value is None:
+                return None
+            assert isinstance(value, tuple)
+            lat, lng = value
+            return "POINT(%s %s)" % (lng, lat)
+        return process
+
+    def result_processor(self, dialect, coltype):
+        def process(value):
+            if value is None:
+                return None
+            #m = re.match(r'^POINT\((\S+) (\S+)\)$', value)
+            #lng, lat = m.groups()
+            # 'POINT(135.00 35.00)' => ('135.00', '35.00')
+            lng, lat = value[6:-1].split()
+            return (float(lat), float(lng))
+        return process
+
+# class User(Base):
+#     __tablename__ = "users"
+
+#     user_id = Column(Integer, primary_key=True, index=True)  # PK
+#     name = Column(String(255), index=True)
+#     gender = Column(String(255), index=True)
+#     age_range = Column(String(255), index=True)
+#     phone_num = Column(Integer)
+#     created_date = Column(Integer)
+#     created_at = Column(TIMESTAMP, server_default=func.now())
+#     updated_at = Column(TIMESTAMP, server_default=text(
+#         'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
 
 class User(Base):
     __tablename__ = "users"
 
-    user_id = Column(Integer, primary_key=True, index=True)  # PK
-    name = Column(String(255), index=True)
-    gender = Column(String(255), index=True)
-    age_range = Column(String(255), index=True)
-    phone_num = Column(Integer)
-    created_date = Column(Integer)
+    id = Column(Integer, primary_key=True, index=True)
+
+
+class Location(Base):
+    __tablename__ = "locations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    points = Column(Coordinates, nullable=False)
+
+
+class Store(Base):  # 자식
+    __tablename__ = "stores"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey(User.id))
+    location_id = Column(Integer, ForeignKey(Location.id))
+
+    name = Column(String(100))
+    category = Column(ENUM("식당", "생선가게", "정육점", "과일가게", "반찬가게", "옷가게", "기타"))
+    description = Column(String(255))
+    photo_url = Column(String(255
+                              ))
+    is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(TIMESTAMP, server_default=text(
         'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
-
-# class Customer(Base):
-#     __tablename__ = "customers"
-
-#     customer_id = Column(Integer, primary_key=True, index=True)  # PK
-#     user_id = Column(Integer, ForeignKey("users.user_id"), index=True)  # FK1
-
-
-# class Merchant(Base):
-#     __tablename__ = "merchants"
-
-#     merchant_id = Column(Integer, primary_key=True, index=True)  # PK
-#     user_id = Column(Integer, ForeignKey("users.user_id"), index=True)  # FK1
+    user = relationship("User", backref=backref("store", uselist=False))
+    menu = relationship("Menu")
+    location = relationship(
+        "Location", backref=backref("store", uselist=False))
 
 
 class Menu(Base):
     __tablename__ = "menus"
 
     id = Column(Integer, primary_key=True, index=True)
+    store_id = Column(Integer, ForeignKey(Store.id))  # Fk1
     name = Column(String(255), index=True)
     cost = Column(Integer)
     photo_url = Column(String(2083))
+    is_active = Column(Boolean, nullable=False, default=True)
+    is_main_menu = Column(Boolean, nullable=False, default=False)
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(TIMESTAMP, server_default=text(
         'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-    is_active = Column(Boolean, nullable=False)
-
-
-class Category(Base):
-    __tablename__ = "categories"
-
-    category_id = Column(Integer, primary_key=True, index=True)  # PK
-    category_name = Column(String(255), index=True)
-
-
-class Location(Base):
-    __tablename__ = "locations"
-
-    location_id = Column(Integer, primary_key=True, index=True)  # PK
-    # latitude = Column(DECIMAL, index=True)
-    # longitude = Column(DECIMAL, index=True)
-
-
-class Store(Base):
-    __tablename__ = "stores"
-
-    store_id = Column(Integer, primary_key=True, index=True)  # PK
-    merchant_id = Column(Integer, ForeignKey(
-        "merchants.merchant_id"), index=True)  # FK1
-    id = Column(Integer, ForeignKey("menus.id"), index=True)  # FK2
-    category_id = Column(Integer, ForeignKey(
-        "categories.category_id"), index=True)  # FK3
-    location_id = Column(Integer, ForeignKey(
-        "locations.location_id"), index=True)  # FK4
-    store_name = Column(String(255), index=True)
-    store_photo_url = Column(String(255), index=True)
-    created_at = Column(TIMESTAMP, server_default=func.now())
-    updated_at = Column(TIMESTAMP, server_default=text(
-        'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-
-    menus = relationship("Menu", backref="store")
-
-
-class Order(Base):
-    __tablename__ = "orders"
-
-    order_id = Column(Integer, primary_key=True, index=True)  # PK
-    customer_id = Column(Integer, ForeignKey(
-        "customers.customer_id"), index=True)  # FK1
-    store_id = Column(Integer, ForeignKey(
-        "stores.store_id"), index=True)  # FK2
-    order_datetime = Column(Integer)
-    order_is_takeout = Column(Boolean)
-    order_cost = Column(Integer)

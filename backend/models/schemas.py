@@ -1,25 +1,76 @@
-from typing import List, Union
+# # User
 
-from decimal import Decimal
+
+# class UserBase(BaseModel):
+#     user_id: int
+
+#     class Config:
+#         orm_mode = True
+
+
+# class User(UserBase):
+#     name: str
+#     gender: str
+#     age_range: str
+#     phone_num: str
+#     # created_at: str
+#     # updated_at: str
+
+
+# class UserCreate(UserBase):
+#     name: str
+#     gender: str
+#     age_range: str
+#     phone_num: str
+
+
+# class UserRead(User):
+#     pass
+
+
+# class UserDelete(UserBase):
+#     pass
+
+# # Order
+
+
+# class OrderBase(BaseModel):
+#     order_id: int
+#     customer_id: int
+#     store_id: int
+
+#     class Config:
+#         orm_mode = True
+
+
+# class Order(OrderBase):
+#     order_datetime: int
+#     order_is_takeout: bool
+#     order_cost: int
+
+
+# class OrderCreate(Order):
+#     pass
+
+
+# class OrderRead(Order):
+#     pass
+
+
+# class OrderDelete(Order):
+#     pass
+from enum import Enum
+from typing import Tuple
 from pydantic import BaseModel
 
-# User
 
-
-class UserBase(BaseModel):
-    user_id: int
-
+class UserBase(BaseModel):  # 사용자 테이블
     class Config:
         orm_mode = True
 
 
 class User(UserBase):
-    name: str
-    gender: str
-    age_range: str
-    phone_num: str
-    # created_at: str
-    # updated_at: str
+    pass
 
 
 class UserCreate(UserBase):
@@ -29,69 +80,67 @@ class UserCreate(UserBase):
     phone_num: str
 
 
-class UserRead(User):
+class UserRead(UserBase):
     pass
 
 
-class UserDelete(UserBase):
+class LocationBase(BaseModel):
+    class Config:
+        orm_mode = True
+
+
+class Location(LocationBase):  # 위치 테이블
+    points: Tuple[float, float]
+
+
+class LocationCreate(LocationBase):
+    points: Tuple[float, float]
+
+
+class LocationRead(LocationCreate):
     pass
 
-# # Customer
+
+class StoreBase(BaseModel):  # 가게 테이블
+    class Config:
+        orm_mode = True
+        use_enum_values = True
 
 
-# class CustomerBase(BaseModel):
-
-#     class Config:
-#         orm_mode = True
-
-
-# class Customer(CustomerBase):
-#     user_id: int
-#     customer_id: int
-
-
-# class CustomerCreate(CustomerBase):
-#     pass
+class Category(str, Enum):
+    food = "식당"
+    meat = "정육점"
+    fish = "생선가게"
+    fruit = "과일가게"
+    side_dish = "반찬가게"
+    clothes = "옷가게"
+    etc = "기타"
 
 
-# class CustomerRead(CustomerBase):
-#     pass
+class Store(StoreBase):
+    id: str
+    user_id: int
+    category: Category
+    location_id: int
+    name: str
+    description: str
+    photo_url: str
+    is_active: bool
 
 
-# class CustomerDelete(Customer):
-#     pass
-
-# # Merchant
-
-
-# class MerchantBase(BaseModel):
-
-#     class Config:
-#         orm_mode = True
+class StoreCreate(StoreBase):
+    user_id: int
+    category: Category
+    name: str
+    description: str
+    photo_url: str
 
 
-# class Merchant(MerchantBase):
-#     user_id: int
-#     merchant_id: int
-
-
-# class MerchantCreate(MerchantBase):
-#     pass
-
-
-# class MerchantRead(MerchantBase):
-#     pass
-
-
-# class MerchantDelete(Merchant):
-#     pass
-
-# Menu
+class StoreRead(StoreCreate):
+    id: str
 
 
 class MenuBase(BaseModel):
-    id: int
-
     class Config:
         orm_mode = True
 
@@ -101,131 +150,23 @@ class Menu(MenuBase):
     cost: int
     photo_url: str
     is_active: bool
+    is_main_menu: bool
 
 
 class MenuCreate(MenuBase):
+    store_id: int
     name: str
     cost: int
     photo_url: str
-    is_active: bool
 
 
 class MenuRead(MenuCreate):
-    is_active: bool
+    id: str
+
+
+class MenuUpdate(MenuBase):
+    is_main_menu: bool
 
 
 class MenuDelete(MenuBase):
     is_active: bool
-
-# Category
-
-
-class CategoryBase(BaseModel):
-    category_id: int
-
-    class Config:
-        orm_mode = True
-
-
-class Category(CategoryBase):
-    category_name: str
-
-
-class CategoryCreate(CategoryBase):
-    category_name: str
-
-
-class CategoryRead(CategoryBase):
-    pass
-
-
-class CategoryDelete(CategoryBase):
-    pass
-
-# Location
-
-
-class LocationBase(BaseModel):
-    location_id: int
-
-    class Config:
-        orm_mode = True
-
-
-class Location(LocationBase):
-    pass
-    # latitude: Decimal
-    # longitude: Decimal
-
-
-class LocationCreate(Location):
-    pass
-
-
-class LocationRead(Location):
-    pass
-
-
-class LocationDelete(LocationBase):
-    pass
-
-# Store
-
-
-class StoreBase(BaseModel):
-
-    class Config:
-        orm_mode = True
-
-
-class Store(StoreBase):
-    store_id: int
-    merchant_id: int
-    menu_id: int
-    category_id: int
-    location_id: int
-
-    store_name: str
-    store_photo_url: str
-
-
-class StoreCreate(StoreBase):
-    store_name: str
-    store_photo_url: str
-
-
-class StoreRead(StoreBase):
-    pass
-
-
-class StoreDelete(StoreBase):
-    pass
-
-# Order
-
-
-class OrderBase(BaseModel):
-    order_id: int
-    customer_id: int
-    store_id: int
-
-    class Config:
-        orm_mode = True
-
-
-class Order(OrderBase):
-    order_datetime: int
-    order_is_takeout: bool
-    order_cost: int
-
-
-class OrderCreate(Order):
-    pass
-
-
-class OrderRead(Order):
-    pass
-
-
-class OrderDelete(Order):
-    pass
