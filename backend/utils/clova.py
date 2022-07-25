@@ -59,11 +59,11 @@ class Clova:
             return ResponseClova(False, message, data)
 
         # check api_url validate
-        if res['error']:
+        if 'error' in res:
             return ResponseClova(False, res['error']['message'], data)
 
         # check secret_key
-        if res['code'] == "0002":
+        if 'code' in res and res['code'] == '0002':
             return ResponseClova(False, res['message'], data)
 
         for field in res['images'][0]['fields']:
