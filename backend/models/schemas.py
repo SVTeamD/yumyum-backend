@@ -31,36 +31,25 @@
 # class UserDelete(UserBase):
 #     pass
 
-# # Order
-
-
-# class OrderBase(BaseModel):
-#     order_id: int
-#     customer_id: int
-#     store_id: int
-
+# ㅡㅡㅡㅡㅡㅡ
+# class UserBase(BaseModel):  # 사용자 테이블
 #     class Config:
 #         orm_mode = True
 
 
-# class Order(OrderBase):
-#     order_datetime: int
-#     order_is_takeout: bool
-#     order_cost: int
-
-
-# class OrderCreate(Order):
+# class User(UserBase):
 #     pass
 
 
-# class OrderRead(Order):
-#     pass
+# class UserCreate(UserBase):
+#     name: str
+#     gender: str
+#     age_range: str
+#     phone_num: str
 
-
-# class OrderDelete(Order):
-#     pass
 from enum import Enum
 from typing import Tuple
+from xmlrpc.client import Boolean
 from pydantic import BaseModel
 
 
@@ -78,10 +67,18 @@ class UserCreate(UserBase):
     gender: str
     age_range: str
     phone_num: str
+    user_type: bool
 
 
-class UserRead(UserBase):
-    pass
+class UserRead(UserCreate):
+    created_at: str
+    updated_at: str
+
+
+class UserDelete(UserBase):
+    is_active: bool
+
+# location
 
 
 class LocationBase(BaseModel):
@@ -107,6 +104,7 @@ class StoreBase(BaseModel):  # 가게 테이블
         use_enum_values = True
 
 
+# category
 class Category(str, Enum):
     food = "식당"
     meat = "정육점"
@@ -115,6 +113,8 @@ class Category(str, Enum):
     side_dish = "반찬가게"
     clothes = "옷가게"
     etc = "기타"
+
+# store
 
 
 class Store(StoreBase):
@@ -138,6 +138,8 @@ class StoreCreate(StoreBase):
 
 class StoreRead(StoreCreate):
     id: str
+
+# menu
 
 
 class MenuBase(BaseModel):
@@ -169,4 +171,35 @@ class MenuUpdate(MenuBase):
 
 
 class MenuDelete(MenuBase):
+    is_active: bool
+
+# order
+
+
+class OrderBase(BaseModel):
+
+    class Config:
+        orm_mode = True
+
+
+class Order(OrderBase):
+    order_datetime: int
+    order_is_takeout: bool
+    order_cost: int
+
+
+class OrderCreate(Order):
+    user_id: int
+    store_id: int
+    order_datetime: int
+    order_is_takeout: bool
+    order_cost: int
+
+
+class OrderRead(OrderCreate):
+    created_at: str
+    updated_at: str
+
+
+class OrderDelete(OrderBase):
     is_active: bool

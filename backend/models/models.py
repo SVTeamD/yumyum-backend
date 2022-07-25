@@ -1,3 +1,17 @@
+# class User(Base):
+#     __tablename__ = "users"
+
+#     id = Column(Integer, primary_key=True, index=True)
+#     name = Column(String(255), index=True)
+#     gender = Column(String(255), index=True)
+#     age_range = Column(String(255), index=True)
+#     phone_num = Column(Integer)
+#     created_date = Column(Integer)
+#     is_active = Column(Boolean, nullable=False, default=True)
+#     created_at = Column(TIMESTAMP, server_default=func.now())
+#     updated_at = Column(TIMESTAMP, server_default=text(
+#         'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.types import TIMESTAMP
@@ -14,7 +28,7 @@ from sqlalchemy.types import UserDefinedType, Float
 class Coordinates(UserDefinedType):
 
     def get_col_spec(self):
-        return "Coordinates"
+        return "GEOMETRY"
 
     def bind_expression(self, bindvalue):
         return func.ST_GeomFromText(bindvalue, type_=self)
@@ -42,24 +56,21 @@ class Coordinates(UserDefinedType):
             return (float(lat), float(lng))
         return process
 
-# class User(Base):
-#     __tablename__ = "users"
-
-#     user_id = Column(Integer, primary_key=True, index=True)  # PK
-#     name = Column(String(255), index=True)
-#     gender = Column(String(255), index=True)
-#     age_range = Column(String(255), index=True)
-#     phone_num = Column(Integer)
-#     created_date = Column(Integer)
-#     created_at = Column(TIMESTAMP, server_default=func.now())
-#     updated_at = Column(TIMESTAMP, server_default=text(
-#         'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-
 
 class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
+    user_type = Column(Boolean, nullable=False, default=True)
+    name = Column(String(255), index=True)
+    gender = Column(String(255), index=True)
+    age_range = Column(String(255), index=True)
+    phone_num = Column(String(255), index=True)
+    created_date = Column(Integer)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(TIMESTAMP, server_default=func.now())
+    updated_at = Column(TIMESTAMP, server_default=text(
+        'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
 
 class Location(Base):
@@ -103,11 +114,20 @@ class Menu(Base):
     is_active = Column(Boolean, nullable=False, default=True)
     is_main_menu = Column(Boolean, nullable=False, default=False)
     created_at = Column(TIMESTAMP, server_default=func.now())
-<<<<<<< HEAD
     updated_at = Column(TIMESTAMP, server_default=text(
         'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-=======
-    updated_at = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-    is_active = Column(Boolean, nullable=False)
-    is_main_menu = Column(Boolean, nullable=False)
->>>>>>> UserCusMer
+
+
+class Order(Base):
+    __tablename__ = "orders"
+
+    id = Column(Integer, primary_key=True, index=True)  # PK
+    user_id = Column(Integer, ForeignKey(User.id), index=True)  # FK1
+    store_id = Column(Integer, ForeignKey(Store.id), index=True)  # FK2
+    order_datetime = Column(Integer)
+    order_is_takeout = Column(Boolean)
+    order_cost = Column(Integer)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(TIMESTAMP, server_default=func.now())
+    updated_at = Column(TIMESTAMP, server_default=text(
+        'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

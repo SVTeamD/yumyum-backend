@@ -1,5 +1,6 @@
-# # User
-# @app.post("/users/", response_model=schemas.User)
+# user
+
+# @app.post("/users/", response_model=schemas.User)  # 유저 생성
 # def create_user_info(user: schemas.UserCreate, db: Session = Depends(get_db)):
 #     return crud.create_user(db, user=user)
 
@@ -10,27 +11,11 @@
 #     return users
 
 
-# @app.delete("/users/delete/{user_id}/")
-# def delete_user_by_id(user_id: str, db: Session = Depends(get_db)):
-#     response = crud.delete_user(db, user_id=user_id)
+# @app.delete("/users/{user_id}")
+# def delete_user_by_id(user_id: int, db: Session = Depends(get_db)):
+#     response = crud.delete_user_by_id(db, user_id=user_id)
 #     return response.status_code
 
-# # Order
-# @app.post("/orders/", response_model=schemas.Order)
-# def create_order_info(order: schemas.OrderCreate, db: Session = Depends(get_db)):
-#     return crud.create_order(db, order=order)
-
-
-# @app.get("/orders/{order_id}/")
-# def read_order_by_id(order_id: int, db: Session = Depends(get_db)):
-#     orders = crud.get_order_by_id(db, order_id=order_id)
-#     return orders
-
-
-# @app.delete("/orders/{order_id}/")
-# def delete_order_by_name(order_id: int, db: Session = Depends(get_db)):
-#     response = crud.delete_order(db, order_id=order_id)
-#     return response.status_code
 from typing import Union
 import uuid
 
@@ -72,10 +57,10 @@ async def upload(file_object: UploadFile = File(...)):
     post_bucket(content, file_object.filename)
     return {"filename": file_object.filename}
 
+
 # user
 
-
-@app.post("/users/", response_model=schemas.User)  # 유저 생성
+@app.post("/users/", response_model=schemas.User)
 def create_user_info(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db, user=user)
 
@@ -84,6 +69,12 @@ def create_user_info(user: schemas.UserCreate, db: Session = Depends(get_db)):
 def read_user_by_id(user_id: int, db: Session = Depends(get_db)):
     users = crud.get_user_by_id(db, user_id=user_id)
     return users
+
+
+@app.delete("/users/{user_id}")
+def delete_user_by_id(user_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_user_by_id(db, user_id=user_id)
+    return response.status_code
 
 # store
 
@@ -104,6 +95,12 @@ def read_menu_info(store_id, skip: int = 1, limit: int = 10, db: Session = Depen
     menus = crud.get_store_menu(db, store_id=store_id)
     return menus
 
+
+@app.delete("/stores/{store_id}")
+def delete_store_by_id(store_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_store_by_id(db, store_id=store_id)
+    return response.status_code
+
 # menu
 
 
@@ -118,11 +115,6 @@ def read_main_menu(skip: int = 1, limit: int = 10, db: Session = Depends(get_db)
     return menus
 
 
-@app.get("/menus/main", response_model=List[schemas.Menu])
-def read_main_menu(skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
-    menus = crud.get_main_menu(db)
-    return menus
-
 @app.get("/menus/{menu_id}/")
 def read_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
     menus = crud.get_menu_by_id(db, menu_id=menu_id)
@@ -134,11 +126,6 @@ def read_menu_by_name(menu_name: str, db: Session = Depends(get_db)):
     menus = crud.get_menu_by_name(db, menu_name=menu_name)
     return menus
 
-@app.put("/menus/main/{menu_id}")
-def update_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
-    response = crud.update_main_menu_by_id(db, menu_id = menu_id)
-    return response.status_code
-
 
 @app.put("/menus/main/{menu_id}")
 def update_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
@@ -149,4 +136,35 @@ def update_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
 @app.delete("/menus/{menu_id}")
 def delete_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
     response = crud.delete_menu_by_id(db, menu_id=menu_id)
+    return response.status_code
+
+# order
+
+
+@app.post("/orders/", response_model=schemas.OrderCreate)
+def create_order_info(order: schemas.OrderCreate, db: Session = Depends(get_db)):
+    return crud.create_order(db, order=order)
+
+
+@app.get("/orders/main", response_model=List[schemas.Order])
+def read_main_order(skip: int = 1, limit: int = 10, db: Session = Depends(get_db)):
+    orders = crud.get_main_order(db)
+    return orders
+
+
+@app.get("/orders/{order_id}/")
+def read_order_by_id(order_id: int, db: Session = Depends(get_db)):
+    orders = crud.get_order_by_id(db, order_id=order_id)
+    return orders
+
+
+@app.put("/orders/main/{order_id}")
+def update_order_by_id(order_id: int, db: Session = Depends(get_db)):
+    response = crud.update_main_order_by_id(db, order_id=order_id)
+    return response.status_code
+
+
+@app.delete("/orders/{order_id}")
+def delete_order_by_id(order_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_order_by_id(db, order_id=order_id)
     return response.status_code
