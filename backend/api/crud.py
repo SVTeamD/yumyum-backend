@@ -137,7 +137,7 @@ def create_order(db: Session, order: schemas.OrderCreate):  # 주문
 def get_order(db: Session):
     # return db.query(models.Order).all()
     order = db.query(models.Order).filter(
-        models.Order.is_active == True).first()
+        models.Order.is_active == True).all()
     if (order):
         return order
     else:
