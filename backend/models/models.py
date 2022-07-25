@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.types import TIMESTAMP
 from sqlalchemy.sql import text, func
@@ -42,7 +42,7 @@ class Coordinates(UserDefinedType):
         return process
 
 
-class User(Base):
+class User(Base): # 부모
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -55,7 +55,7 @@ class Location(Base):
 
 
 
-class Store(Base): #자식
+class Store(Base): # 부모
     __tablename__ = "stores"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -65,8 +65,7 @@ class Store(Base): #자식
     name = Column(String(100))
     category = Column(ENUM("식당", "생선가게", "정육점", "과일가게", "반찬가게", "옷가게", "기타"))
     description = Column(String(255))
-    photo_url = Column(String(255
-    ))
+    photo_url = Column(String(255))
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
@@ -88,4 +87,17 @@ class Menu(Base):
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
     
+
+class Order(Base): #자식
+    __tablename__ = "orders"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey(User.id)) # Fk1
+    store_id = Column(Integer, ForeignKey(Store.id)) # Fk2
+    datetime = Column(DateTime)
+    is_takeout = Column(Boolean, nullable=False)
+    cost = Column(Integer)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(TIMESTAMP, server_default=func.now())
+    updated_at = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
