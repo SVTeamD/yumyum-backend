@@ -63,6 +63,10 @@ def read_menu_info(store_id, skip: int = 1, limit: int = 10, db: Session = Depen
     menus = crud.get_store_menu(db, store_id = store_id)
     return menus
 
+@app.delete("/stores/{store_id}")
+def delete_store_by_id(store_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_store_by_id(db, store_id = store_id)
+    return response.status_code
 
 
 @app.post("/menus/", response_model = schemas.MenuCreate) # menu api

@@ -14,7 +14,7 @@ from sqlalchemy.types import UserDefinedType, Float
 class Coordinates(UserDefinedType):
 
     def get_col_spec(self):
-        return "Coordinates"
+        return "GEOMETRY"
 
     def bind_expression(self, bindvalue):
         return func.ST_GeomFromText(bindvalue, type_=self)
