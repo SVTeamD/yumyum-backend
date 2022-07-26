@@ -22,8 +22,7 @@ class UserCreate(UserBase):
 
 
 class UserRead(UserCreate):
-    created_at: str
-    updated_at: str
+    id: int
 
 
 class UserDelete(UserBase):
@@ -145,7 +144,6 @@ class OrderCreate(OrderBase):
     datetime: datetime
     is_takeout: bool
     cost: int
-
 
 class OrderRead(OrderCreate):
     int: str

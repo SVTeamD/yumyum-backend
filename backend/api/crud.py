@@ -9,8 +9,12 @@ from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
 
 def get_user_by_id(db: Session, user_id: int):
-    return db.query(models.User).filter(models.User.id == user_id).first()
-
+    user = db.query(models.User).filter(models.User.is_active ==
+                                        True).filter(models.User.id == user_id).first()
+    if (user):
+        return user
+    else:
+        return "삭제된 이름입니다!"
 
 def create_user(db: Session, user: schemas.UserCreate):  # 유저 생성
     db_user = models.User(name=user.name,
@@ -134,26 +138,36 @@ def create_order(db: Session, order: schemas.OrderCreate):  # 주문
     return db_order
 
 
-def get_order(db: Session):
-    # return db.query(models.Order).all()
-    order = db.query(models.Order).filter(
-        models.Order.is_active == True).first()
+def get_order(db: Session):  
+    return db.query(models.Order).filter(models.Order.is_active == True).all()
+
+
+
+def get_order_by_id(db: Session, order_id: int):
+    order = db.query(models.Order).filter(models.Order.is_active ==
+                                        True).filter(models.Order.id == order_id).first()
+    if (order):
+        return order
+    else:
+        return "삭제된 메뉴입니다!"
+
+
+def get_order_by_user_id(db: Session, user_id):  # 주문
+    order = db.query(models.Order).join(models.User).filter(
+        models.User.id == user_id).filter(models.Order.is_active == True).all()
     if (order):
         return order
     else:
         return "삭제된 주문입니다!"
+    
 
-
-def get_user_order(db: Session, user_id):  # 주문
-    order = db.query(models.Order).join(models.User).filter(
-        models.User.id == user_id).filter(models.Order.is_active == True).all()
-    return order
-
-
-def get_store_order(db: Session, store_id):  # 주문
+def get_order_by_store_id(db: Session, store_id):  # 주문
     order = db.query(models.Order).join(models.Store).filter(
         models.Store.id == store_id).filter(models.Order.is_active == True).all()
-    return order
+    if (order):
+        return order
+    else:
+        return "삭제된 주문입니다!"
 
 
 def delete_order_by_id(db: Session, order_id: int):
