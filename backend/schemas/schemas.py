@@ -78,6 +78,7 @@ class Store(StoreBase):
     is_active: bool
 
 
+
 class StoreCreate(StoreBase):
     user_id: int
     category: Category
@@ -86,8 +87,13 @@ class StoreCreate(StoreBase):
     photo_url: str
 
 
-class StoreRead(StoreCreate):
-    id: str
+class StoreRead(StoreBase):
+    id: int
+    category: Category
+    name: str
+    photo_url: str
+    points: Tuple[float, float]
+
 
 # menu
 
