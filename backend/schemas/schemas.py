@@ -99,7 +99,7 @@ class MenuBase(BaseModel):
 
 class Menu(MenuBase):  # 메뉴
     name: str
-    cost: int
+    cost: str # 잠시 str로 수정
     photo_url: str
     is_active: bool
     is_main_menu: bool
@@ -107,9 +107,10 @@ class Menu(MenuBase):  # 메뉴
 
 class MenuCreate(MenuBase):
     store_id: int
-    name: str
-    cost: int
-    photo_url: str
+    s3_image_url: str
+    # name: str
+    # cost: int
+    # photo_url: str
 
 
 class MenuRead(MenuCreate):
