@@ -14,7 +14,7 @@ from .user import User
 from .location import Location
 
 
-class Store(Base):  
+class Store(Base):
     __tablename__ = "stores"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -27,11 +27,10 @@ class Store(Base):
     photo_url = Column(String(255))
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(TIMESTAMP, server_default=func.now())
-    updated_at = Column(TIMESTAMP, server_default=text(
-        'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+    updated_at = Column(
+        TIMESTAMP, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    )
 
     user = relationship("User", backref=backref("store", uselist=False))
     menu = relationship("Menu")
-    location = relationship(
-        "Location", backref=backref("store", uselist=False))
-
+    location = relationship("Location", backref=backref("store", uselist=False))

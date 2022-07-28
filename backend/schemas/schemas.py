@@ -28,6 +28,7 @@ class UserRead(UserCreate):
 class UserDelete(UserBase):
     is_active: bool
 
+
 # location
 
 
@@ -64,6 +65,7 @@ class Category(str, Enum):
     clothes = "옷가게"
     etc = "기타"
 
+
 # store
 
 
@@ -76,7 +78,6 @@ class Store(StoreBase):
     description: str
     photo_url: str
     is_active: bool
-
 
 
 class StoreCreate(StoreBase):
@@ -105,7 +106,7 @@ class MenuBase(BaseModel):
 
 class Menu(MenuBase):  # 메뉴
     name: str
-    cost: str # 잠시 str로 수정
+    cost: str  # 잠시 str로 수정
     photo_url: str
     is_active: bool
     is_main_menu: bool
@@ -151,6 +152,7 @@ class OrderCreate(OrderBase):
     datetime: datetime
     is_takeout: bool
     cost: int
+
 
 class OrderRead(OrderCreate):
     int: str

@@ -7,7 +7,6 @@ from sqlalchemy.types import UserDefinedType
 
 
 class Coordinates(UserDefinedType):
-
     def get_col_spec(self):
         return "GEOMETRY"
 
@@ -24,17 +23,19 @@ class Coordinates(UserDefinedType):
             assert isinstance(value, tuple)
             lat, lng = value
             return "POINT(%s %s)" % (lat, lng)
+
         return process
 
     def result_processor(self, dialect, coltype):
         def process(value):
             if value is None:
                 return None
-            #m = re.match(r'^POINT\((\S+) (\S+)\)$', value)
-            #lng, lat = m.groups()
+            # m = re.match(r'^POINT\((\S+) (\S+)\)$', value)
+            # lng, lat = m.groups()
             # 'POINT(135.00 35.00)' => ('135.00', '35.00')
             lng, lat = value[6:-1].split()
             return (float(lat), float(lng))
+
         return process
 
 
@@ -43,4 +44,3 @@ class Location(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     points = Column(Coordinates, nullable=False)
-

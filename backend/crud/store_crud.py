@@ -9,26 +9,37 @@ from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
 # 가게 메뉴 정보 받기
 def get_store_menu(db: Session, store_id):  # 메뉴
-    menu = db.query(Menu).join(Store).filter(
-        Store.id == store_id).filter(Menu.is_active == True).all()
+    menu = (
+        db.query(Menu)
+        .join(Store)
+        .filter(Store.id == store_id)
+        .filter(Menu.is_active == True)
+        .all()
+    )
     return menu
 
 
 # 가게 전체 조회
 def get_store(db: Session):  # 가게
-    querysets = db.query(
-        *[Store, Location]).join(Location).filter(Location.id == Store.location_id).all()
+    querysets = (
+        db.query(*[Store, Location])
+        .join(Location)
+        .filter(Location.id == Store.location_id)
+        .all()
+    )
     objects = list()
     for queryset in querysets:
         store, loc = queryset
         print(store.id, loc.points)
-        objects.append(schemas.StoreRead(
-            id=store.id,
-            name=store.name,
-            category=store.category,
-            photo_url=store.photo_url,
-            points=loc.points
-        ))
+        objects.append(
+            schemas.StoreRead(
+                id=store.id,
+                name=store.name,
+                category=store.category,
+                photo_url=store.photo_url,
+                points=loc.points,
+            )
+        )
     return objects
 
 
@@ -37,13 +48,14 @@ def create_store(db: Session, store: schemas.StoreCreate, loc: schemas.LocationC
     location = Location(points=loc.points)
     db.add(location)
     db.commit()
-    db_store = Store(user_id=store.user_id,
-                     location_id=location.id,
-                     name=store.name,
-                     category=store.category,
-                     description=store.description,
-                     photo_url=store.photo_url
-                     )
+    db_store = Store(
+        user_id=store.user_id,
+        location_id=location.id,
+        name=store.name,
+        category=store.category,
+        description=store.description,
+        photo_url=store.photo_url,
+    )
 
     db.add(db_store)
     db.commit()
@@ -52,7 +64,6 @@ def create_store(db: Session, store: schemas.StoreCreate, loc: schemas.LocationC
 
 # 가게 삭제
 def delete_store_by_id(db: Session, store_id: int):
-    store = db.query(Store).filter(Store.id ==
-                                   store_id).update({'is_active': False})
+    store = db.query(Store).filter(Store.id == store_id).update({"is_active": False})
     db.commit()
     return Response(status_code=HTTP_204_NO_CONTENT)

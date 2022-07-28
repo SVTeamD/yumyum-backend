@@ -9,7 +9,6 @@ from database import Base
 from sqlalchemy import func
 
 
-
 class User(Base):
     __tablename__ = "users"
 
@@ -21,7 +20,6 @@ class User(Base):
     phone_num = Column(String(255), index=True)
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(TIMESTAMP, server_default=func.now())
-    updated_at = Column(TIMESTAMP, server_default=text(
-        'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-
-
+    updated_at = Column(
+        TIMESTAMP, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    )

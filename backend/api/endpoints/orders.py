@@ -13,9 +13,9 @@ router = APIRouter()
 # TODO: 에러 처리
 
 # 주문
-@router.post("", response_model = schemas.OrderCreate)
+@router.post("", response_model=schemas.OrderCreate)
 def create_order_info(order: schemas.OrderCreate, db: Session = Depends(get_db)):
-    return order_crud.create_order(db, order = order)
+    return order_crud.create_order(db, order=order)
 
 
 # 주문 조회
@@ -35,15 +35,15 @@ def read_order_by_id(order_id: int, db: Session = Depends(get_db)):
 # 유저 주문 조회
 @router.get("/user/{user_id}")
 def read_order_by_user_id(user_id: int, db: Session = Depends(get_db)):
-    orders = order_crud.get_order_by_user_id(db, user_id = user_id)
+    orders = order_crud.get_order_by_user_id(db, user_id=user_id)
     return orders
 
 
 # 가게 주문 조회
 @router.get("/store/{store_id}")
 def read_order_by_store_id(store_id: int, db: Session = Depends(get_db)):
-    orders = order_crud.get_order_by_store_id(db, store_id = store_id)
-    return orders 
+    orders = order_crud.get_order_by_store_id(db, store_id=store_id)
+    return orders
 
 
 # 주문 삭제
@@ -51,4 +51,3 @@ def read_order_by_store_id(store_id: int, db: Session = Depends(get_db)):
 def delete_order_by_id(order_id: int, db: Session = Depends(get_db)):
     response = order_crud.delete_order_by_id(db, order_id=order_id)
     return response.status_code
-

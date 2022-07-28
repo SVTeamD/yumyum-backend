@@ -1,5 +1,5 @@
 import uuid
-from fastapi import  FastAPI
+from fastapi import FastAPI
 from fastapi import UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -16,9 +16,7 @@ origins = [
     "http://localhost:3000",
     "http://localhost:8080",
 ]
-app = FastAPI(
-    title="전통시장"
-)
+app = FastAPI(title="전통시장")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -26,7 +24,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(api_router, prefix='/api')
+app.include_router(api_router, prefix="/api")
 
 
 @app.post("/upload", status_code=200, description="***** Upload JPG asset to S3 *****")
