@@ -12,7 +12,7 @@ router = APIRouter()
 # TODO: 에러 처리
 
 # 가게 전체 조회
-@router.get("", response_model = List[schemas.Store])
+@router.get("", response_model = List[schemas.StoreRead])
 def read_store_info(db: Session = Depends(get_db)):
     stores = store_crud.get_store(db)
     return stores

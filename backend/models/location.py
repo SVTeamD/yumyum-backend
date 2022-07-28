@@ -23,7 +23,7 @@ class Coordinates(UserDefinedType):
                 return None
             assert isinstance(value, tuple)
             lat, lng = value
-            return "POINT(%s %s)" % (lng, lat)
+            return "POINT(%s %s)" % (lat, lng)
         return process
 
     def result_processor(self, dialect, coltype):
