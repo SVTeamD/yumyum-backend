@@ -30,8 +30,15 @@ def create_menu_info(menu: schemas.MenuCreate, db: Session = Depends(get_db)):
     create_menu_info = {}
     for idx, data in enumerate(response.data):
         name, cost = data
-        create_menu_info[idx+1] = menu_crud.create_menu(db, name, cost, menu = menu)
-
+        existed_menu = menu_crud.get_menu_by_id_and_name(db, menu.store_id, name)
+        # 존재하지 않는 메뉴이므로 새로 생성해야함
+        if not existed_menu:
+            create_menu_info[idx+1] = menu_crud.create_menu(db, name, cost, menu = menu)
+        else:
+            # 존재하는데, 삭제된 메뉴이므로 is_active = true로 변경
+            if not existed_menu.is_active:
+                menu_crud.restore_menu_by_id(db, existed_menu.id)
+            
     return {}
 
 

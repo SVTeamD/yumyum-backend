@@ -3,10 +3,15 @@ from schemas import schemas
 from fastapi import Response
 from sqlalchemy.orm import Session
 from starlette.responses import Response
-from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
+from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_200_OK
 
 
-
+# 중복확인을 위한 가게아이디, 메뉴 이름으로 조회
+def get_menu_by_id_and_name(db: Session, store_id: int, menu_name: str):
+    menu = db.query(Menu).filter(Menu.store_id == store_id).filter(Menu.name == menu_name).first()
+    if (menu):
+        return menu
+    return False
 
 
 # 메인 메뉴 조회
@@ -59,3 +64,11 @@ def delete_menu_by_id(db: Session, menu_id: int):
                                         menu_id).update({'is_active': False})
     db.commit()
     return Response(status_code=HTTP_204_NO_CONTENT)
+
+
+# 삭제된 메뉴 복구
+def restore_menu_by_id(db: Session, menu_id: int):
+    menu = db.query(Menu).filter(Menu.id ==
+                                        menu_id).update({'is_active': True})
+    db.commit()
+    return Response(status_code=HTTP_200_OK)
