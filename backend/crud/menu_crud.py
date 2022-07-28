@@ -35,11 +35,11 @@ def get_menu_by_name(db: Session, menu_name: str):
 
 
 # 메뉴 생성
-def create_menu(db: Session, menu: schemas.MenuCreate):
+def create_menu(db: Session, name: str, cost: str, menu: schemas.MenuCreate):
     db_menu = Menu(store_id=menu.store_id,
-                          name=menu.name,
-                          cost=menu.cost,
-                          photo_url=menu.photo_url)
+                          name=name,
+                          cost=cost,
+                          photo_url="")
     db.add(db_menu)
     db.commit()
     return db_menu

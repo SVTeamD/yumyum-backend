@@ -2,7 +2,7 @@ import requests
 import uuid
 import time
 import json
-import config
+import utils.config as config
 from urllib.request import urlopen 
 
 class ResponseClova:
@@ -34,7 +34,7 @@ class Clova:
         'X-OCR-SECRET': config.SECRET_KEY
         }
  
-    async def __request_clova_api(self, url: str):
+    def __request_clova_api(self, url: str):
         try:
             file = urlopen(url).read()
             files = [('file', file)]
@@ -44,13 +44,29 @@ class Clova:
         except:
             return False
 
+    def __preprocess(self, lst: list):
+        menu_price_lst = []
+
+        # 가격인지 구분하는 문자열 (추후 추가 가능)
+        price_division = '00'
+
+        # 문자열에서 구분점 지워줌
+        for idx, data in enumerate(lst):
+            lst[idx] = data.replace(',','').replace('.','').replace(':','')
+
+        for idx, data in enumerate(lst):
+            if price_division in data:
+                menu_price_lst.append((lst[idx-1], lst[idx]))
+              
+        return menu_price_lst
+
         
-    async def ocr_transform(self, image_url: str):
+    def ocr_transform(self, image_url: str):
         '''
         image_url : s3 이미지 url 경로
         return : {status: boolean, data: list}
         '''
-        res = await self.__request_clova_api(image_url)
+        res = self.__request_clova_api(image_url)
         data = []
 
         # check s3 image url validate
@@ -69,7 +85,7 @@ class Clova:
         for field in res['images'][0]['fields']:
             data.append(field['inferText'])
 
-        return ResponseClova(True, res['images'][0]['message'], data )
+        return ResponseClova(True, res['images'][0]['message'], self.__preprocess(data))
 
         
 

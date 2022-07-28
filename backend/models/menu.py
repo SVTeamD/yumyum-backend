@@ -15,7 +15,7 @@ class Menu(Base):
     id = Column(Integer, primary_key=True, index=True)
     store_id = Column(Integer, ForeignKey(Store.id))  # Fk1
     name = Column(String(255), index=True)
-    cost = Column(Integer)
+    cost = Column(String(255)) # 짐시 문자형으로 수정
     photo_url = Column(String(2083))
     is_active = Column(Boolean, nullable=False, default=True)
     is_main_menu = Column(Boolean, nullable=False, default=False)

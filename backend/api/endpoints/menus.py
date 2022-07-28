@@ -7,15 +7,32 @@ from crud import menu_crud
 from schemas import schemas
 from api.dep import get_db
 
+from utils.clova import Clova
+
 router = APIRouter()
 
 
 # TODO: 에러 처리
 
 # 메뉴 생성
-@router.post("", response_model = schemas.MenuCreate) # menu api
+@router.post("") # menu api
 def create_menu_info(menu: schemas.MenuCreate, db: Session = Depends(get_db)):
-    return menu_crud.create_menu(db, menu = menu)
+    # clova 함수 호출
+    # 데이터 하나하나 저장
+
+    clova = Clova()
+    response = clova.ocr_transform(menu.s3_image_url)
+    # 실패
+    if not response.status:
+        raise HTTPException(status_code=500, detail="Clova OCR API Error")
+    
+    # 중복이면 안넣어야 함
+    create_menu_info = {}
+    for idx, data in enumerate(response.data):
+        name, cost = data
+        create_menu_info[idx+1] = menu_crud.create_menu(db, name, cost, menu = menu)
+
+    return {}
 
 
 # 메인 메뉴 정보 조회
