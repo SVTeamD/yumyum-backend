@@ -1,6 +1,6 @@
 from typing import Any, List
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 
 from crud import menu_crud
@@ -8,6 +8,7 @@ from schemas import schemas
 from api.dep import get_db
 
 from utils.clova import Clova
+from aws.bucket import post_bucket
 
 router = APIRouter()
 
@@ -16,15 +17,19 @@ router = APIRouter()
 
 # 메뉴 생성
 @router.post("")  # menu api
-def create_menu_info(menu: schemas.MenuCreate, db: Session = Depends(get_db)):
-    # clova 함수 호출
-    # 데이터 하나하나 저장
-
+async def create_menu_info(
+    menu: schemas.MenuCreate,
+    menu_image: UploadFile = File(...),
+    db: Session = Depends(get_db),
+):
+    menu_image.filename = f"{menu.store_id}/menu.jpg"
+    menu_content = await menu_image.read()
+    post_bucket(menu_content, menu_image.filename)
     clova = Clova()
-    response = clova.ocr_transform(menu.s3_image_url)
+    response = clova.ocr_transform(menu_content.filename)
     # 실패
     if not response.status:
-        raise HTTPException(status_code=500, detail="Clova OCR API Error")
+        return HTTPException(status_code=555, detail="Clova OCR API Error")
 
     # 중복이면 안넣어야 함
     create_menu_info = {}
