@@ -49,6 +49,21 @@ class Clova:
         except:
             return False
 
+    def __request_clova_api_file(self, file: bytes):
+        try:
+            files = [("file", file)]
+            response = requests.request(
+                "POST",
+                config.API_URL,
+                headers=self.headers,
+                data=self.payload,
+                files=files,
+            )
+            res = json.loads(response.text.encode("utf8"))
+            return res
+        except:
+            return False
+
     def __preprocess(self, lst: list):
         menu_price_lst = []
 
@@ -65,12 +80,12 @@ class Clova:
 
         return menu_price_lst
 
-    def ocr_transform(self, image_url: str):
+    def ocr_transform(self, image: bytes):
         """
         image_url : s3 이미지 url 경로
         return : {status: boolean, data: list}
         """
-        res = self.__request_clova_api(image_url)
+        res = self.__request_clova_api_file(image)
         data = []
 
         # check s3 image url validate
