@@ -1,10 +1,11 @@
 from unicodedata import category
 from models import User, Store, Location, Menu, Order
 from schemas import schemas
+from uuid import uuid4
 from fastapi import Response
 from sqlalchemy.orm import Session
 from starlette.responses import Response
-from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
+from starlette.status import HTTP_204_NO_CONTENT
 
 
 # 가게 메뉴 정보 받기
@@ -54,7 +55,7 @@ def create_store(db: Session, store: schemas.StoreCreate, loc: schemas.LocationC
         name=store.name,
         category=store.category,
         description=store.description,
-        photo_url=store.photo_url,
+        photo_url=f"{uuid4}.jpg",
     )
 
     db.add(db_store)
