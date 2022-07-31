@@ -33,7 +33,7 @@ class Coordinates(UserDefinedType):
             # m = re.match(r'^POINT\((\S+) (\S+)\)$', value)
             # lng, lat = m.groups()
             # 'POINT(135.00 35.00)' => ('135.00', '35.00')
-            lng, lat = value[6:-1].split()
+            lat, lng = value[6:-1].split()
             return (float(lat), float(lng))
 
         return process

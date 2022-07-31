@@ -1,19 +1,26 @@
 from typing import List
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
+from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Form
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
-from crud import store_crud
-from schemas import schemas
-from api.dep import get_db
-from starlette.status import HTTP_201_CREATED
+from starlette.status import HTTP_201_CREATED, HTTP_422_UNPROCESSABLE_ENTITY
+from pydantic import ValidationError
 
 from utils.clova import Clova
 from aws.bucket import post_bucket
+from crud import store_crud
+from schemas import schemas
+from api.dep import get_db
 
 router = APIRouter()
 clova = Clova()
 
-
-# TODO: 에러 처리
+async def checker(data: str = Form(...)):
+    try:
+        model = schemas.StoreCreate.parse_raw(data)
+    except ValidationError as e:
+        raise HTTPException(detail=jsonable_encoder(e.errors()), status_code=HTTP_422_UNPROCESSABLE_ENTITY)
+        
+    return model
 
 # 가게 전체 조회
 @router.get("", response_model=List[schemas.StoreRead])
@@ -23,24 +30,20 @@ def read_store_info(db: Session = Depends(get_db)):
 
 
 # 가게 생성
-@router.post("", response_model=schemas.Store)
+@router.post("", status_code=HTTP_201_CREATED, response_model=schemas.Store)
 async def create_store_info(
-    store: schemas.StoreCreate,
-    loc: schemas.LocationCreate,
+    store: schemas.StoreCreate = Depends(checker),
     store_image: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
+    store = store_crud.create_store(db, store)
     store_content = await store_image.read()
-    store = store_crud.create_store(db, store=store, loc=loc)
     store_image.filename = f"{store.id}/{store.photo_url}"
     post_bucket(store_content, store_image.filename)
-    response = clova.ocr_transform(store_content.filename)
-    
+    response = clova.ocr_transform(store_content)
     if not response.status:
         return HTTPException(status_code=555, detail="Clova OCR API Error")
-
-    return HTTP_201_CREATED
-
+    return store_crud.create_store(db, store=store)   
 
 # TODO: 추가 하기
 # @router.get("/stores/{store_id}", response_model=List[schemas.Store])

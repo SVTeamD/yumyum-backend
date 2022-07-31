@@ -45,17 +45,14 @@ def get_store(db: Session):  # 가게
 
 
 # 가게 생성 (location table)
-def create_store(db: Session, store: schemas.StoreCreate, loc: schemas.LocationCreate):
-    location = Location(points=loc.points)
-    db.add(location)
-    db.commit()
+def create_store(db: Session, store: schemas.StoreCreate):
     db_store = Store(
         user_id=store.user_id,
-        location_id=location.id,
+        location=store.location,
         name=store.name,
         category=store.category,
         description=store.description,
-        photo_url=f"{uuid4}.jpg",
+        photo_url=f"{uuid4()}.jpg",
     )
 
     db.add(db_store)

@@ -8,7 +8,6 @@ from sqlalchemy.dialects.mysql import ENUM
 from database import Base
 
 from sqlalchemy import func
-from sqlalchemy.types import UserDefinedType, Float
 
 from .user import User
 from .store import Store
