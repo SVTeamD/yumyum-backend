@@ -1,9 +1,10 @@
-from models import User, Store, Location, Menu, Order
+from urllib import response
+from models import User, Store, Order
 from schemas import schemas
 from fastapi import Response
 from sqlalchemy.orm import Session
 from starlette.responses import Response
-from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
+from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 
 
 # 주문 생성
@@ -36,7 +37,7 @@ def get_order_by_id(db: Session, order_id: int):
     if order:
         return order
     else:
-        return "취소된 주문입니다"
+        return Response(status_code=HTTP_404_NOT_FOUND)
 
 
 # user id로 주문 조회
@@ -51,7 +52,7 @@ def get_order_by_user_id(db: Session, user_id):  # 주문
     if order:
         return order
     else:
-        return "취소된 주문입니다"
+        return Response(status_code=HTTP_404_NOT_FOUND)
 
 
 # 가게 아이디로 주문 조회
@@ -66,7 +67,7 @@ def get_order_by_store_id(db: Session, store_id):  # 주문
     if order:
         return order
     else:
-        return "취소된 주문입니다"
+        return Response(status_code=HTTP_404_NOT_FOUND)
 
 
 # 주문 삭제

@@ -3,7 +3,7 @@ from schemas import schemas
 from fastapi import Response, HTTPException
 from sqlalchemy.orm import Session
 from starlette.responses import Response
-from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
+from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 
 
 # user
@@ -15,7 +15,7 @@ def get_user_by_id(db: Session, user_id: int):
     if user:
         return user
     else:
-        return "id가 잘못되었습니다"
+        return Response(status_code=HTTP_404_NOT_FOUND)
 
 
 # user 생성
