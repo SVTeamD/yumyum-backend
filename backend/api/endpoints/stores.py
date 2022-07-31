@@ -24,7 +24,7 @@ async def checker(data: str = Form(...)):
 
 # 가게 전체 조회
 @router.get("", response_model=List[schemas.StoreRead])
-def read_store_info(db: Session = Depends(get_db)):
+def read_stores_info(db: Session = Depends(get_db)):
     stores = store_crud.get_store(db)
     return stores
 
@@ -38,18 +38,17 @@ async def create_store_info(
 ):
     store = store_crud.create_store(db, store)
     store_content = await store_image.read()
-    store_image.filename = f"{store.id}/{store.photo_url}"
+    store_image.filename = f"{store.id}/store/{store.photo_url}"
     post_bucket(store_content, store_image.filename)
     response = clova.ocr_transform(store_content)
     if not response.status:
         return HTTPException(status_code=555, detail="Clova OCR API Error")
-    return store_crud.create_store(db, store=store)   
+    return store  
 
-# TODO: 추가 하기
-# @router.get("/stores/{store_id}", response_model=List[schemas.Store])
-# def read_store_info(db: Session = Depends(get_db)):
-#     stores = crud.get_store(db)
-#     return stores
+# Get store by user id
+@router.get("/stores", response_model=schemas.Store)
+def get_store_info(store: schemas.StoreSingleRead, db: Session = Depends(get_db)):
+    return store_crud.get_store_by_user(db, store=store)
 
 # 특정 가게 메뉴 조회
 @router.get("/{store_id}/menus", response_model=List[schemas.Menu])
@@ -58,6 +57,7 @@ def read_menu_info(
 ):
     menus = store_crud.get_store_menu(db, store_id=store_id)
     return menus
+
 
 
 # 가게 삭제

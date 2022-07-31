@@ -93,8 +93,10 @@ class StoreRead(StoreBase):
     category: Category
     name: str
     photo_url: str
-    points: Tuple[float, float]
+    location: Tuple[float, float]
 
+class StoreSingleRead(StoreBase):
+    user_id: int
 
 # menu
 
@@ -119,6 +121,11 @@ class MenuCreate(MenuBase):
     # cost: int
     # photo_url: str
 
+class MenusCreate(MenuBase):
+    store_id: int
+    name: str
+    cost: str
+    photo_url: str
 
 class MenuRead(MenuCreate):
     id: str

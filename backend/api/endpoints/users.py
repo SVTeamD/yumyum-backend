@@ -3,6 +3,7 @@ from typing import Any, List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from starlette.status import HTTP_201_CREATED, HTTP_422_UNPROCESSABLE_ENTITY
 from crud import user_crud
 from schemas import schemas
 from api.dep import get_db
@@ -13,7 +14,7 @@ router = APIRouter()
 # TODO: 에러 처리
 
 # 유저 생성
-@router.post("", response_model=schemas.User)
+@router.post("", response_model=schemas.User, status_code=HTTP_201_CREATED)
 def create_user_info(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return user_crud.create_user(db, user=user)
 
