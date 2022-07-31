@@ -1,9 +1,12 @@
-from typing import Any, List
+from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
+from starlette.status import HTTP_201_CREATED, HTTP_422_UNPROCESSABLE_ENTITY
+from fastapi.encoders import jsonable_encoder
+from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
-from crud import menu_crud
+from crud import menu_crud, store_crud
 from schemas import schemas
 from api.dep import get_db
 
@@ -11,40 +14,32 @@ from utils.clova import Clova
 from aws.bucket import post_bucket
 
 router = APIRouter()
+clova = Clova()
 
+async def checker(data: str = Form(...)):
+    try:
+        model = schemas.StoreSingleRead.parse_raw(data)
+    except ValidationError as e:
+        raise HTTPException(detail=jsonable_encoder(e.errors()), status_code=HTTP_422_UNPROCESSABLE_ENTITY)
+        
+    return model
 
-# TODO: 에러 처리
-
-# 메뉴 생성
-@router.post("")  # menu api
+@router.post("", status_code=HTTP_201_CREATED)
 async def create_menu_info(
-    menu: schemas.MenuCreate,
+    menu: schemas.StoreSingleRead = Depends(checker),
     menu_image: UploadFile = File(...),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db)
 ):
-    menu_image.filename = f"{menu.store_id}/menu.jpg"
+    store = await store_crud.get_store_by_user(db, store=menu)
     menu_content = await menu_image.read()
+    menu_image.filename = f"{store.id}/menu/{store.photo_url}"
     post_bucket(menu_content, menu_image.filename)
-    clova = Clova()
-    response = clova.ocr_transform(menu_content.filename)
-    # 실패
+    response = clova.ocr_transform(menu_content)
     if not response.status:
         return HTTPException(status_code=555, detail="Clova OCR API Error")
+    
+    return menu_crud.create_menus(db, store, response.data)
 
-    # 중복이면 안넣어야 함
-    create_menu_info = {}
-    for idx, data in enumerate(response.data):
-        name, cost = data
-        existed_menu = menu_crud.get_menu_by_id_and_name(db, menu.store_id, name)
-        # 존재하지 않는 메뉴이므로 새로 생성해야함
-        if not existed_menu:
-            create_menu_info[idx + 1] = menu_crud.create_menu(db, name, cost, menu=menu)
-        else:
-            # 존재하는데, 삭제된 메뉴이므로 is_active = true로 변경
-            if not existed_menu.is_active:
-                menu_crud.restore_menu_by_id(db, existed_menu.id)
-
-    return {}
 
 
 # 메인 메뉴 정보 조회

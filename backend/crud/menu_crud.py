@@ -53,13 +53,18 @@ def get_menu_by_name(db: Session, menu_name: str):
     else:
         return Response(status_code=HTTP_404_NOT_FOUND)
 
-
-# 메뉴 생성
-def create_menu(db: Session, name: str, cost: str, menu: schemas.MenuCreate):
-    db_menu = Menu(store_id=menu.store_id, name=name, cost=cost, photo_url="")
-    db.add(db_menu)
+def create_menus(db: Session, store: schemas.Store, payload: List):
+    for _, value in enumerate(payload):
+        menu_name, menu_cost = value
+        db_menu = Menu(
+            store_id=store.id,
+            name=menu_name,
+            cost=menu_cost,
+            photo_url="",
+        )
+        db.add(db_menu)
     db.commit()
-    return db_menu
+    return Response(status_code=HTTP_201_CREATED)
 
 
 # 메인 메뉴로 만들어주기

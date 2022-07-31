@@ -72,9 +72,9 @@ class Category(str, Enum):
 class Store(StoreBase):
     id: str
     user_id: int
-    category: Category
-    location_id: int
     name: str
+    category: Category
+    location: Tuple[float, float]
     description: str
     photo_url: str
     is_active: bool
@@ -85,6 +85,7 @@ class StoreCreate(StoreBase):
     category: Category
     name: str
     description: str
+    location: Tuple[float, float]
 
 
 class StoreRead(StoreBase):
@@ -92,8 +93,10 @@ class StoreRead(StoreBase):
     category: Category
     name: str
     photo_url: str
-    points: Tuple[float, float]
+    location: Tuple[float, float]
 
+class StoreSingleRead(StoreBase):
+    user_id: int
 
 # menu
 
@@ -118,6 +121,11 @@ class MenuCreate(MenuBase):
     # cost: int
     # photo_url: str
 
+class MenusCreate(MenuBase):
+    store_id: int
+    name: str
+    cost: str
+    photo_url: str
 
 class MenuRead(MenuCreate):
     id: str

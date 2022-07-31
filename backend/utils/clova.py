@@ -86,6 +86,7 @@ class Clova:
         return : {status: boolean, data: list}
         """
         res = self.__request_clova_api_file(image)
+        print(res)
         data = []
 
         # check s3 image url validate
