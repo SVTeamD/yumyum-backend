@@ -1,12 +1,16 @@
-from typing import Any, List
-
-from fastapi import APIRouter, Depends, HTTPException
+from typing import List
+from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
 from sqlalchemy.orm import Session
 from crud import store_crud
 from schemas import schemas
 from api.dep import get_db
+from starlette.status import HTTP_201_CREATED
+
+from utils.clova import Clova
+from aws.bucket import post_bucket
 
 router = APIRouter()
+clova = Clova()
 
 
 # TODO: 에러 처리
@@ -20,12 +24,22 @@ def read_store_info(db: Session = Depends(get_db)):
 
 # 가게 생성
 @router.post("", response_model=schemas.Store)
-def create_store_info(
+async def create_store_info(
     store: schemas.StoreCreate,
     loc: schemas.LocationCreate,
+    store_image: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
-    return store_crud.create_store(db, store=store, loc=loc)
+    store_content = await store_image.read()
+    store = store_crud.create_store(db, store=store, loc=loc)
+    store_image.filename = f"{store.id}/{store.photo_url}"
+    post_bucket(store_content, store_image.filename)
+    response = clova.ocr_transform(store_content.filename)
+    
+    if not response.status:
+        return HTTPException(status_code=555, detail="Clova OCR API Error")
+
+    return HTTP_201_CREATED
 
 
 # TODO: 추가 하기
