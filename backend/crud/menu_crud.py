@@ -1,10 +1,9 @@
-from typing import List
-from models import User, Store, Location, Menu, Order
+from models import Menu
 from schemas import schemas
 from fastapi import Response
 from sqlalchemy.orm import Session
 from starlette.responses import Response
-from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_200_OK
+from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_200_OK, HTTP_404_NOT_FOUND
 
 
 # 중복확인을 위한 가게아이디, 메뉴 이름으로 조회
@@ -38,7 +37,7 @@ def get_menu_by_id(db: Session, menu_id: int):
     if menu:
         return menu
     else:
-        return "없는 메뉴입니다!"
+        return Response(status_code=HTTP_404_NOT_FOUND)
 
 
 # 이름으로 메뉴 조회 (elastic search)
@@ -52,7 +51,7 @@ def get_menu_by_name(db: Session, menu_name: str):
     if menu:
         return menu
     else:
-        return "없는 메뉴입니다"
+        return Response(status_code=HTTP_404_NOT_FOUND)
 
 def create_menus(db: Session, store: schemas.Store, payload: List):
     for _, value in enumerate(payload):
