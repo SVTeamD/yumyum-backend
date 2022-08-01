@@ -1,10 +1,9 @@
-from urllib import response
 from models import User, Store, Order
 from schemas import order_schema
 from fastapi import Response
 from sqlalchemy.orm import Session
 from starlette.responses import Response
-from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 
 
 # 주문 생성

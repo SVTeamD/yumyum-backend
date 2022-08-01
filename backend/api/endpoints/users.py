@@ -1,9 +1,7 @@
-from typing import Any, List
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from starlette.status import HTTP_201_CREATED, HTTP_422_UNPROCESSABLE_ENTITY
+from starlette.status import HTTP_201_CREATED
 from crud import user_crud
 from schemas import user_schema
 from api.dep import get_db

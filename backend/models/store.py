@@ -6,9 +6,6 @@ from sqlalchemy.dialects.mysql import ENUM
 from sqlalchemy.types import UserDefinedType
 
 from database import Base
-
-
-
 from .user import User
 
 
