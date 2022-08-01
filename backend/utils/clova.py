@@ -33,7 +33,7 @@ class Clova:
         self.payload = {"message": json.dumps(self.request_json).encode("UTF-8")}
         self.headers = {"X-OCR-SECRET": config.SECRET_KEY}
 
-    def __request_clova_api_file(self, file: bytes):
+    async def __request_clova_api_file(self, file: bytes):
         try:
             files = [("file", file)]
             response = requests.request(
@@ -48,7 +48,7 @@ class Clova:
         except:
             return False
 
-    def __preprocess(self, lst: list):
+    async def __preprocess(self, lst: list):
         menu_price_lst = []
 
         # 가격인지 구분하는 문자열 (추후 추가 가능)
@@ -74,7 +74,7 @@ class Clova:
         return menu_price_lst
 
 
-    def ocr_transform(self, image: bytes):
+    async def ocr_transform(self, image: bytes, type: str):
         """
         image: 이미지
         return : {status: boolean, data: list}
@@ -98,4 +98,7 @@ class Clova:
         for field in res["images"][0]["fields"]:
             data.append(field["inferText"])
 
-        return ResponseClova(True, res["images"][0]["message"], self.__preprocess(data))
+
+        if type == "Menu":
+            return ResponseClova(True, res["images"][0]["message"], self.__preprocess(data))
+        return ResponseClova(True,  res["images"][0]["message"], data)

@@ -34,7 +34,7 @@ async def create_menu_info(
     menu_content = await menu_image.read()
     menu_image.filename = f"{store.id}/menu/{store.photo_url}"
     post_bucket(menu_content, menu_image.filename)
-    response = clova.ocr_transform(menu_content)
+    response = await clova.ocr_transform(menu_content, "Menu")
     if not response.status:
         return HTTPException(status_code=555, detail="Clova OCR API Error")
     

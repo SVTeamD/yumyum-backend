@@ -40,7 +40,7 @@ async def create_store_info(
     store_content = await store_image.read()
     store_image.filename = f"{store.id}/store/{store.photo_url}"
     post_bucket(store_content, store_image.filename)
-    response = clova.ocr_transform(store_content)
+    response = await clova.ocr_transform(store_content, "Store")
     if not response.status:
         return HTTPException(status_code=555, detail="Clova OCR API Error")
     return store  
