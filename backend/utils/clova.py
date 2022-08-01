@@ -1,9 +1,9 @@
+import re
 import requests
 import uuid
 import time
 import json
 import utils.config as config
-from urllib.request import urlopen
 
 
 class ResponseClova:
@@ -33,22 +33,6 @@ class Clova:
         self.payload = {"message": json.dumps(self.request_json).encode("UTF-8")}
         self.headers = {"X-OCR-SECRET": config.SECRET_KEY}
 
-    def __request_clova_api(self, url: str):
-        try:
-            file = urlopen(url).read()
-            files = [("file", file)]
-            response = requests.request(
-                "POST",
-                config.API_URL,
-                headers=self.headers,
-                data=self.payload,
-                files=files,
-            )
-            res = json.loads(response.text.encode("utf8"))
-            return res
-        except:
-            return False
-
     def __request_clova_api_file(self, file: bytes):
         try:
             files = [("file", file)]
@@ -70,23 +54,32 @@ class Clova:
         # 가격인지 구분하는 문자열 (추후 추가 가능)
         price_division = "00"
 
-        # 문자열에서 구분점 지워줌
-        for idx, data in enumerate(lst):
-            lst[idx] = data.replace(",", "").replace(".", "").replace(":", "")
+        # 메뉴에 한글이 있는지 전처리
+        hangul = re.compile('[가-힣+]')
 
         for idx, data in enumerate(lst):
             if price_division in data:
-                menu_price_lst.append((lst[idx - 1], lst[idx]))
+                # 제대로 된 메뉴인지 검증
+                # 1. 메뉴에 가격이 들어갔는지
+                if price_division in lst[idx - 1]:
+                    continue
+
+                # 2. 한글이 포함되어 있지 않으면 이상한 메뉴로 판단
+                if len(hangul.sub('',lst[idx - 1])) == len(lst[idx - 1]):
+                    continue
+ 
+                price = re.sub('[-=+,#/\?:^.@*\"※~ㆍ!』‘|\(\)\[\]`\'…》\”\“\’·]', '', re.split('[()-]', lst[idx])[0])
+                menu_price_lst.append((lst[idx - 1], price))
 
         return menu_price_lst
 
+
     def ocr_transform(self, image: bytes):
         """
-        image_url : s3 이미지 url 경로
+        image: 이미지
         return : {status: boolean, data: list}
         """
         res = self.__request_clova_api_file(image)
-        print(res)
         data = []
 
         # check s3 image url validate
