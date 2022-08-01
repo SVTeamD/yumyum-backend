@@ -23,16 +23,20 @@ This is a backend setup for SVTeamD.
 ## **Tech stack**
 | 분류  |  기술                                                                 |
 | --   | --------------------------------------------------------------------- |
-| Frontend | 
-| Backend | ![Fastapi](https://img.shields.io/badge/-Fastapi-000000?style=flat&logo=Fastapi) ![Elasticsearch](https://img.shields.io/badge/Elasticsearch-005571?logo=Elasticsearch) ![Swagger](https://img.shields.io/badge/swagger-gray?logo=swagger) ![Docker](https://img.shields.io/badge/-Docker-000000?style=flat&logo=docker) ![Clova](https://img.shields.io/badge/clova-green?logo=naver)
-| DB | ![MongoDB](https://img.shields.io/badge/Mysql-E6B91E?style=flat-square&logo=MySql&logoColor=white)                            
-| CI/CD |
-| Infra |
-| Monitoring|
+| Frontend | ![REACT](https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black) ![Axios](https://img.shields.io/badge/Axios-black?style=for-the-badge&logo=Axios&logoColor=black) 
+| Backend | ![Fastapi](https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=Fastapi&logoColor=black) ![Uvicorn](https://img.shields.io/badge/Uvicorn-009688?style=for-the-badge&logo=Uvicorn&logoColor=black) ![Swagger](https://img.shields.io/badge/swagger-gray?style=for-the-badge&logo=Swagger&logoColor=green) ![Docker](https://img.shields.io/badge/docker-000000?style=for-the-badge&logo=docker&logoColor=blue) ![clova](https://img.shields.io/badge/clova-green?style=for-the-badge&logo=naver&logoColor=00DB9B) ![Elasticsearch](https://img.shields.io/badge/Elasticsearch-005571?style=for-the-badge&logo=Elasticsearch&logoColor=04B4AE)
+| DB | ![MYSQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)                     
+| CI/CD | ![GitHubActions](https://img.shields.io/badge/GitHubActions-9cf?style=for-the-badge&logo=GitHubActions&logoColor=blue)         
+| Infra | ![Nginx](https://img.shields.io/badge/nginx-inactive?style=for-the-badge&logo=nginx&logoColor=009639) ![S3](https://img.shields.io/badge/S3-orange?style=for-the-badge&logo=AmazonS3&logoColor=569A31) ![EC2](https://img.shields.io/badge/EC2-white?style=for-the-badge&logo=AmazonEC2&logoColor=FF9900)
+| Monitoring| ![Prometheus](https://img.shields.io/badge/Prometheus-white?style=for-the-badge&logo=Prometheus&logoColor=E6522C) ![Grafana](https://img.shields.io/badge/Grafana-white?style=for-the-badge&logo=Grafana&logoColor=F46800) ![Alertmanager](https://img.shields.io/badge/Alertmanager-black?style=for-the-badge&logo=Alertmanager&logoColor=F46800) ![Slack-Bot](https://img.shields.io/badge/Slack_Bot-black?style=for-the-badge&logo=Slack-Bot&logoColor=F46800)
 
 <br>
 
+## **Swagger**
 
+<br>
+
+## **Directory**
 
 <br>
 
