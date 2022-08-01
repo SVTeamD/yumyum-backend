@@ -1,3 +1,6 @@
 .env.prod
 .env.dev
 volumes/elasticsearch/*
+
+grafana/data
+prometheus/data
