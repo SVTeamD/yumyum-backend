@@ -16,7 +16,9 @@ router = APIRouter()
 # 주문
 @router.post("", response_model=schemas.OrderCreate, status_code=HTTP_201_CREATED)
 def create_order_info(order: schemas.OrderCreate, db: Session = Depends(get_db)):
-    return order_crud.create_order(db, order=order)
+    order = order_crud.create_order(db, order=order)
+    print(order)
+    return order
 
 
 # 주문 조회
@@ -27,9 +29,9 @@ def read_order_info(db: Session = Depends(get_db)):
 
 
 # 주문 상세 조회
-@router.get("/{order_id}")
-def read_order_by_id(order_id: int, db: Session = Depends(get_db)):
-    order = order_crud.get_order_by_id(db, order_id=order_id)
+@router.get("/{user_id}")
+def read_order_by_id(user_id: int, db: Session = Depends(get_db)):
+    order = order_crud.get_order_by_id(db, user_id=user_id)
     return order
 
 
