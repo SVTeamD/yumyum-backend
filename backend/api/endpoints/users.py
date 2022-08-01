@@ -14,15 +14,16 @@ router = APIRouter()
 # TODO: 에러 처리
 
 # 유저 생성
-@router.post("", response_model=schemas.User, status_code=HTTP_201_CREATED)
+@router.post("", status_code=HTTP_201_CREATED)
 def create_user_info(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    return user_crud.create_user(db, user=user)
+    user = user_crud.create_user(db, user=user)
+    return user
 
 
 # 유저 상세 조회
-@router.get("/{user_id}")
-def read_user_by_id(user_id: int, db: Session = Depends(get_db)):
-    users = user_crud.get_user_by_id(db, user_id=user_id)
+@router.get("/{token}")
+def get_user_by_id(token: str, db: Session = Depends(get_db)):
+    users = user_crud.get_user_by_token(db, token=token)
     return users
 
 

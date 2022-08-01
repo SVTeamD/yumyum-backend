@@ -19,7 +19,6 @@ class Order(Base):  # 자식
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey(User.id))  # Fk1
     store_id = Column(Integer, ForeignKey(Store.id))  # Fk2
-    datetime = Column(DateTime)
     is_takeout = Column(Boolean, nullable=False)
     cost = Column(Integer)
     is_active = Column(Boolean, nullable=False, default=True)

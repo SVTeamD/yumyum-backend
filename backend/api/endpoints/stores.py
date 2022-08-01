@@ -24,7 +24,7 @@ async def checker(data: str = Form(...)):
 
 # 가게 전체 조회
 @router.get("", response_model=List[schemas.StoreRead])
-def read_stores_info(db: Session = Depends(get_db)):
+def get_stores_info(db: Session = Depends(get_db)):
     stores = store_crud.get_store(db)
     return stores
 
@@ -52,7 +52,7 @@ def get_store_info(store: schemas.StoreSingleRead, db: Session = Depends(get_db)
 
 # 특정 가게 메뉴 조회
 @router.get("/{store_id}/menus", response_model=List[schemas.Menu])
-def read_menu_info(
+def get_menu_info(
     store_id, skip: int = 1, limit: int = 10, db: Session = Depends(get_db)
 ):
     menus = store_crud.get_store_menu(db, store_id=store_id)

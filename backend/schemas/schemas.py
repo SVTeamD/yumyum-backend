@@ -19,6 +19,7 @@ class UserCreate(UserBase):
     age_range: str
     phone_num: str
     user_type: bool
+    token: str
 
 
 class UserRead(UserCreate):
@@ -156,7 +157,6 @@ class Order(OrderBase):
 class OrderCreate(OrderBase):
     user_id: int
     store_id: int
-    datetime: datetime
     is_takeout: bool
     cost: int
 

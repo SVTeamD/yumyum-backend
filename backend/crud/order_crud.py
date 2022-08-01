@@ -12,7 +12,6 @@ def create_order(db: Session, order: schemas.OrderCreate):
     db_order = Order(
         user_id=order.user_id,
         store_id=order.store_id,
-        datetime=order.datetime,
         is_takeout=order.is_takeout,
         cost=order.cost,
     )

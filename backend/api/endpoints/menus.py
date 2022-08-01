@@ -44,21 +44,21 @@ async def create_menu_info(
 
 # 메인 메뉴 정보 조회
 @router.get("/main", response_model=List[schemas.Menu])
-def read_main_menu(db: Session = Depends(get_db)):
+def get_main_menu(db: Session = Depends(get_db)):
     menus = menu_crud.get_main_menu(db)
     return menus
 
 
 # 메뉴 상세 조회
 @router.get("/{menu_id}")
-def read_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
+def get_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
     menus = menu_crud.get_menu_by_id(db, menu_id=menu_id)
     return menus
 
 
 # 메뉴 이름으로 검색
 @router.get("/name/{menu_name}")
-def read_menu_by_name(menu_name: str, db: Session = Depends(get_db)):
+def get_menu_by_name(menu_name: str, db: Session = Depends(get_db)):
     menus = menu_crud.get_menu_by_name(db, menu_name=menu_name)
     return menus
 
