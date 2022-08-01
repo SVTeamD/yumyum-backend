@@ -74,7 +74,7 @@ class Clova:
         return menu_price_lst
 
 
-    def ocr_transform(self, image: bytes):
+    def ocr_transform(self, image: bytes, type: str):
         """
         image: 이미지
         return : {status: boolean, data: list}
@@ -98,4 +98,7 @@ class Clova:
         for field in res["images"][0]["fields"]:
             data.append(field["inferText"])
 
-        return ResponseClova(True, res["images"][0]["message"], self.__preprocess(data))
+
+        if type == "Menu":
+            return ResponseClova(True, res["images"][0]["message"], self.__preprocess(data))
+        return ResponseClova(True,  res["images"][0]["message"], data)
