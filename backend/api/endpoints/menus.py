@@ -7,7 +7,7 @@ from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from crud import menu_crud, store_crud
-from schemas import schemas
+from schemas import menu_schema, store_schema
 from api.dep import get_db
 
 from utils.clova import Clova
@@ -18,7 +18,7 @@ clova = Clova()
 
 async def checker(data: str = Form(...)):
     try:
-        model = schemas.StoreSingleRead.parse_raw(data)
+        model = store_schema.StoreSingleRead.parse_raw(data)
     except ValidationError as e:
         raise HTTPException(detail=jsonable_encoder(e.errors()), status_code=HTTP_422_UNPROCESSABLE_ENTITY)
         
@@ -26,7 +26,7 @@ async def checker(data: str = Form(...)):
 
 @router.post("", status_code=HTTP_201_CREATED)
 async def create_menu_info(
-    menu: schemas.StoreSingleRead = Depends(checker),
+    menu: store_schema.StoreSingleRead = Depends(checker),
     menu_image: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
@@ -43,7 +43,7 @@ async def create_menu_info(
 
 
 # 메인 메뉴 정보 조회
-@router.get("/main", response_model=List[schemas.Menu])
+@router.get("/main", response_model=List[menu_schema.Menu])
 def read_main_menu(db: Session = Depends(get_db)):
     menus = menu_crud.get_main_menu(db)
     return menus

@@ -1,6 +1,6 @@
 from urllib import response
 from models import User, Store, Order
-from schemas import schemas
+from schemas import order_schema
 from fastapi import Response
 from sqlalchemy.orm import Session
 from starlette.responses import Response
@@ -8,7 +8,7 @@ from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_404_NOT
 
 
 # 주문 생성
-def create_order(db: Session, order: schemas.OrderCreate):
+def create_order(db: Session, order: order_schema.OrderCreate):
     db_order = Order(
         user_id=order.user_id,
         store_id=order.store_id,

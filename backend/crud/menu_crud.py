@@ -1,6 +1,6 @@
 from typing import List
 from models import User, Store, Location, Menu, Order
-from schemas import schemas
+from schemas import store_schema
 from fastapi import Response
 from sqlalchemy.orm import Session
 from starlette.responses import Response
@@ -54,7 +54,7 @@ def get_menu_by_name(db: Session, menu_name: str):
     else:
         return Response(status_code=HTTP_404_NOT_FOUND)
 
-def create_menus(db: Session, store: schemas.Store, payload: List):
+def create_menus(db: Session, store: store_schema.Store, payload: List):
     for _, value in enumerate(payload):
         menu_name, menu_cost = value
         db_menu = Menu(
