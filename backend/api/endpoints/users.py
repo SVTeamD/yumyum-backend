@@ -1,11 +1,9 @@
-from typing import Any, List
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from crud import user_crud
-from schemas import schemas
+from schemas import user_schema
 from api.dep import get_db
 
 router = APIRouter()
@@ -14,10 +12,9 @@ router = APIRouter()
 # TODO: 에러 처리
 
 # 유저 생성
-@router.post("", status_code=HTTP_201_CREATED)
-def create_user_info(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    user = user_crud.create_user(db, user=user)
-    return user
+@router.post("", response_model=user_schema.User, status_code=HTTP_201_CREATED)
+def create_user_info(user: user_schema.UserCreate, db: Session = Depends(get_db)):
+    return user_crud.create_user(db, user=user)
 
 
 # 유저 상세 조회

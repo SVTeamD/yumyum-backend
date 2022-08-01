@@ -1,9 +1,9 @@
 from models import User
-from schemas import schemas
+from schemas import user_schema
 from fastapi import Response, HTTPException
 from sqlalchemy.orm import Session
 from starlette.responses import Response
-from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 
 
 # user
@@ -19,7 +19,7 @@ def get_user_by_token(db: Session, token: str):
 
 
 # user 생성
-def create_user(db: Session, user: schemas.UserCreate):  # 유저 생성
+def create_user(db: Session, user: user_schema.UserCreate):  # 유저 생성
     for db_user in db.query(User).filter(User.phone_num == user.phone_num).all():
         if db_user.user_type == user.user_type:
             db_user = db.query(User).filter(User.id == db_user.id).update({"token": user.token})

@@ -1,11 +1,8 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.types import TIMESTAMP
 from sqlalchemy.sql import text, func
 
-
 from database import Base
-
 from sqlalchemy import func
 
 

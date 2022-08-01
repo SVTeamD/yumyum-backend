@@ -23,9 +23,12 @@ This is a backend setup for SVTeamD.
 ## **Tech stack**
 | 분류  |  기술                                                                 |
 | --   | --------------------------------------------------------------------- |
-| Backend | ![Fastapi](https://img.shields.io/badge/-Fastapi-000000?style=flat&logo=Fastapi) ![Elasticsearch](https://img.shields.io/badge/Elasticsearch-005571?logo=Elasticsearch) ![Gunicorn](https://img.shields.io/badge/gunicorn-green?logo=gunicorn) ![Swagger](https://img.shields.io/badge/swagger-gray?logo=swagger) ![Docker](https://img.shields.io/badge/-Docker-000000?style=flat&logo=docker)
-| DB | ![MongoDB](https://img.shields.io/badge/Mysql-E6B91E?style=flat-square&logo=MySql&logoColor=white)                            |
-| AI | ![Clova](https://img.shields.io/badge/clova-green?logo=naver)
+| Frontend | 
+| Backend | ![Fastapi](https://img.shields.io/badge/-Fastapi-000000?style=flat&logo=Fastapi) ![Elasticsearch](https://img.shields.io/badge/Elasticsearch-005571?logo=Elasticsearch) ![Swagger](https://img.shields.io/badge/swagger-gray?logo=swagger) ![Docker](https://img.shields.io/badge/-Docker-000000?style=flat&logo=docker) ![Clova](https://img.shields.io/badge/clova-green?logo=naver)
+| DB | ![MongoDB](https://img.shields.io/badge/Mysql-E6B91E?style=flat-square&logo=MySql&logoColor=white)                            
+| CI/CD |
+| Infra |
+| Monitoring|
 
 <br>
 

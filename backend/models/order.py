@@ -1,8 +1,6 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, DateTime
 from sqlalchemy.types import TIMESTAMP
 from sqlalchemy.sql import text, func
-from sqlalchemy.dialects.mysql import ENUM
 
 
 from database import Base
