@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Form
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
-from starlette.status import HTTP_201_CREATED, HTTP_422_UNPROCESSABLE_ENTITY
+from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_422_UNPROCESSABLE_ENTITY
 from pydantic import ValidationError
 
 from utils.clova import Clova
@@ -61,7 +61,6 @@ def read_menu_info(
 
 
 # 가게 삭제
-@router.delete("/{store_id}")
+@router.delete("/{store_id}", status_code=HTTP_204_NO_CONTENT)
 def delete_store_by_id(store_id: int, db: Session = Depends(get_db)):
-    response = store_crud.delete_store_by_id(db, store_id=store_id)
-    return response.status_code
+    store_crud.delete_store_by_id(db, store_id=store_id)
