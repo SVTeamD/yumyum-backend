@@ -27,6 +27,6 @@ def read_user_by_id(user_id: int, db: Session = Depends(get_db)):
 
 
 # 유저 삭제
-@router.delete("/{user_id}", HTTP_204_NO_CONTENT)
+@router.delete("/{user_id}", status_code=HTTP_204_NO_CONTENT)
 def delete_user_by_id(user_id: int, db: Session = Depends(get_db)):
     user_crud.delete_user_by_id(db, user_id=user_id)
