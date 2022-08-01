@@ -1,9 +1,9 @@
 from models import User
-from schemas import schemas
+from schemas import user_schema
 from fastapi import Response, HTTPException
 from sqlalchemy.orm import Session
 from starlette.responses import Response
-from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 
 
 # user
@@ -19,7 +19,7 @@ def get_user_by_id(db: Session, user_id: int):
 
 
 # user 생성
-def create_user(db: Session, user: schemas.UserCreate):  # 유저 생성
+def create_user(db: Session, user: user_schema.UserCreate):  # 유저 생성
     for db_user in db.query(User).filter(User.phone_num == user.phone_num).all():
         if db_user.user_type == user.user_type:
             return HTTPException(status_code=409, detail="중복된 사용자 입니다.")

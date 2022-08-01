@@ -1,6 +1,6 @@
 from typing import List
 from models import User, Store, Menu
-from schemas import schemas
+from schemas import store_schema
 from uuid import uuid4
 from fastapi import Response
 from sqlalchemy.orm import Session
@@ -25,14 +25,14 @@ def get_store(db: Session) -> List[Store]:  # 가게
     return db.query(Store).filter(Store.is_active == True).all()
 
 
-async def get_store_by_user(db: Session, store: schemas.StoreSingleRead):
+async def get_store_by_user(db: Session, store: store_schema.StoreSingleRead):
     store_user = db.query(Store).join(User).filter(User.id == store.user_id).filter(User.is_active == True).first()
     if store_user:
         return store_user 
     return HTTP_425_TOO_EARLY
 
 # 가게 생성 (location table)
-def create_store(db: Session, store: schemas.StoreCreate) -> Store:
+def create_store(db: Session, store: store_schema.StoreCreate) -> Store:
     db_store = Store(
         user_id=store.user_id,
         location=store.location,

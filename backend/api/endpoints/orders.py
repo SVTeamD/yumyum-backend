@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from crud import order_crud
-from schemas import schemas
+from schemas import order_schema
 from api.dep import get_db
 
 router = APIRouter()
@@ -13,13 +13,13 @@ router = APIRouter()
 # TODO: 에러 처리
 
 # 주문
-@router.post("", response_model=schemas.OrderCreate)
-def create_order_info(order: schemas.OrderCreate, db: Session = Depends(get_db)):
+@router.post("", response_model=order_schema.OrderCreate)
+def create_order_info(order: order_schema.OrderCreate, db: Session = Depends(get_db)):
     return order_crud.create_order(db, order=order)
 
 
 # 주문 조회
-@router.get("", response_model=List[schemas.Order])
+@router.get("", response_model=List[order_schema.Order])
 def read_order_info(db: Session = Depends(get_db)):
     orders = order_crud.get_order(db)
     return orders
