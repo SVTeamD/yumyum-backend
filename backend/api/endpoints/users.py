@@ -12,9 +12,10 @@ router = APIRouter()
 # TODO: 에러 처리
 
 # 유저 생성
-@router.post("", response_model=user_schema.User, status_code=HTTP_201_CREATED)
+@router.post("", status_code=HTTP_201_CREATED, response_model=user_schema.User)
 def create_user_info(user: user_schema.UserCreate, db: Session = Depends(get_db)):
-    return user_crud.create_user(db, user=user)
+    user_ = user_crud.create_user(db, user=user)
+    return user_
 
 
 # 유저 상세 조회

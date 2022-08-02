@@ -36,14 +36,15 @@ async def create_store_info(
     store_image: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
-    store = store_crud.create_store(db, store)
     store_content = await store_image.read()
-    store_image.filename = f"{store.id}/store/{store.photo_url}"
-    post_bucket(store_content, store_image.filename)
     response = await clova.ocr_transform(store_content, "Store")
+    store_name = response.data[0]
+    store_ = store_crud.create_store(db, store, store_name)
+    store_image.filename = f"{store_.id}/store/{store_.photo_url}"
+    post_bucket(store_content, store_image.filename)
     if not response.status:
         return HTTPException(status_code=555, detail="Clova OCR API Error")
-    return store  
+    return store_ 
 
 # Get store by user id
 @router.get("/stores", response_model=store_schema.Store)

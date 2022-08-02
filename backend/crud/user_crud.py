@@ -10,32 +10,43 @@ from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 # id로 user 검색
 def get_user_by_token(db: Session, token: str):
     user = (
-        db.query(User).filter(User.is_active == True).filter(User.token == token).first()
+        db.query(User)
+        .filter(User.is_active == True)
+        .filter(User.token == token)
+        .first()
     )
     if not user:
         return Response(status_code=HTTP_404_NOT_FOUND)
     return user
-        
 
 
 # user 생성
-def create_user(db: Session, user: user_schema.UserCreate):  # 유저 생성
-    for db_user in db.query(User).filter(User.phone_num == user.phone_num).all():
-        if db_user.user_type == user.user_type:
-            db_user = db.query(User).filter(User.id == db_user.id).update({"token": user.token})
-            db.commit()
-            return db_user
+def create_user(db: Session, user: user_schema.UserCreate):
+    existing_user = (
+        db.query(User)
+        .filter(User.phone_num == user.phone_num)
+        .filter(User.user_type == user.user_type)
+        .first()
+    )
+    if existing_user:
+        db_user = (
+            db.query(User)
+            .filter(User.id == existing_user.id)
+            .update({"token": user.token})
+        )
+        db.commit()
+        return db.query(User).filter(User.id == existing_user.id).first()
     db_user = User(
         name=user.name,
         user_type=user.user_type,
         gender=user.gender,
         age_range=user.age_range,
         phone_num=user.phone_num,
-        token=user.token
+        token=user.token,
     )
     db.add(db_user)
     db.commit()
-    return db_user.id
+    return db_user
 
 
 # user 삭제

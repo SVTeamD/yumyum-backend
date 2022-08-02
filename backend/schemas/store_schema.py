@@ -54,7 +54,6 @@ class Store(StoreBase):
 class StoreCreate(StoreBase):
     user_id: int
     category: Category
-    name: str
     description: str
     location: Tuple[float, float]
 

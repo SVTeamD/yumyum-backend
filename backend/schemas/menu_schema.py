@@ -16,10 +16,6 @@ class Menu(MenuBase):  # 메뉴
 
 class MenuCreate(MenuBase):
     store_id: int
-    # s3_image_url: str
-    # name: str
-    # cost: int
-    # photo_url: str
 
 
 class MenusCreate(MenuBase):

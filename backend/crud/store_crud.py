@@ -32,11 +32,11 @@ async def get_store_by_user(db: Session, store: store_schema.StoreSingleRead):
     return HTTP_425_TOO_EARLY
 
 # 가게 생성 (location table)
-def create_store(db: Session, store: store_schema.StoreCreate) -> Store:
+def create_store(db: Session, store: store_schema.StoreCreate, store_name: str) -> Store:
     db_store = Store(
         user_id=store.user_id,
         location=store.location,
-        name=store.name,
+        name=store_name,
         category=store.category,
         description=store.description,
         photo_url=f"{uuid4()}.jpg",

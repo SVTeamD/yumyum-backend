@@ -26,11 +26,11 @@ async def checker(data: str = Form(...)):
 
 @router.post("", status_code=HTTP_201_CREATED)
 async def create_menu_info(
-    menu: store_schema.StoreSingleRead = Depends(checker),
+    store_user: store_schema.StoreSingleRead = Depends(checker),
     menu_image: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
-    store = await store_crud.get_store_by_user(db, store=menu)
+    store = await store_crud.get_store_by_user(db, store=store_user)
     menu_content = await menu_image.read()
     menu_image.filename = f"{store.id}/menu/{store.photo_url}"
     post_bucket(menu_content, menu_image.filename)

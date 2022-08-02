@@ -100,5 +100,5 @@ class Clova:
 
 
         if type == "Menu":
-            return ResponseClova(True, res["images"][0]["message"], self.__preprocess(data))
+            return ResponseClova(True, res["images"][0]["message"], await self.__preprocess(data))
         return ResponseClova(True,  res["images"][0]["message"], data)
