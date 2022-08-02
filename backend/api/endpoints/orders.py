@@ -2,6 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
 from crud import order_crud
 from schemas import order_schema
@@ -13,7 +14,7 @@ router = APIRouter()
 # TODO: 에러 처리
 
 # 주문
-@router.post("", response_model=order_schema.OrderCreate)
+@router.post("", response_model=order_schema.OrderCreate, status_code=HTTP_201_CREATED)
 def create_order_info(order: order_schema.OrderCreate, db: Session = Depends(get_db)):
     return order_crud.create_order(db, order=order)
 
@@ -26,9 +27,9 @@ def read_order_info(db: Session = Depends(get_db)):
 
 
 # 주문 상세 조회
-@router.get("/{order_id}")
-def read_order_by_id(order_id: int, db: Session = Depends(get_db)):
-    order = order_crud.get_order_by_id(db, order_id=order_id)
+@router.get("/{user_id}")
+def read_order_by_id(user_id: int, db: Session = Depends(get_db)):
+    order = order_crud.get_order_by_id(db, user_id=user_id)
     return order
 
 
@@ -47,7 +48,7 @@ def read_order_by_store_id(store_id: int, db: Session = Depends(get_db)):
 
 
 # 주문 삭제
-@router.delete("/{order_id}")
+@router.delete("/{order_id}", status_code=HTTP_204_NO_CONTENT)
 def delete_order_by_id(order_id: int, db: Session = Depends(get_db)):
-    response = order_crud.delete_order_by_id(db, order_id=order_id)
-    return response.status_code
+    order_crud.delete_order_by_id(db, order_id=order_id)
+

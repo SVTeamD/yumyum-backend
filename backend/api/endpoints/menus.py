@@ -1,7 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
-from starlette.status import HTTP_201_CREATED, HTTP_422_UNPROCESSABLE_ENTITY
+from starlette.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_422_UNPROCESSABLE_ENTITY
 from fastapi.encoders import jsonable_encoder
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
@@ -51,14 +51,14 @@ def read_main_menu(db: Session = Depends(get_db)):
 
 # 메뉴 상세 조회
 @router.get("/{menu_id}")
-def read_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
+def get_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
     menus = menu_crud.get_menu_by_id(db, menu_id=menu_id)
     return menus
 
 
 # 메뉴 이름으로 검색
 @router.get("/name/{menu_name}")
-def read_menu_by_name(menu_name: str, db: Session = Depends(get_db)):
+def get_menu_by_name(menu_name: str, db: Session = Depends(get_db)):
     menus = menu_crud.get_menu_by_name(db, menu_name=menu_name)
     return menus
 
@@ -71,7 +71,6 @@ def update_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
 
 
 # 메뉴 삭제
-@router.delete("/{menu_id}")
+@router.delete("/{menu_id}", status_code=HTTP_204_NO_CONTENT)
 def delete_menu_by_id(menu_id: int, db: Session = Depends(get_db)):
-    response = menu_crud.delete_menu_by_id(db, menu_id=menu_id)
-    return response.status_code
+    menu_crud.delete_menu_by_id(db, menu_id=menu_id)

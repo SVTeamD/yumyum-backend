@@ -11,7 +11,6 @@ def create_order(db: Session, order: order_schema.OrderCreate):
     db_order = Order(
         user_id=order.user_id,
         store_id=order.store_id,
-        datetime=order.datetime,
         is_takeout=order.is_takeout,
         cost=order.cost,
     )
@@ -26,11 +25,12 @@ def get_order(db: Session):
 
 
 # order id 로 주문 조회
-def get_order_by_id(db: Session, order_id: int):
+def get_order_by_id(db: Session, user_id: int):
     order = (
         db.query(Order)
         .filter(Order.is_active == True)
-        .filter(Order.id == order_id)
+        .filter(Order.user_id == user_id)
+        .order_by(Order.id.desc())
         .first()
     )
     if order:
@@ -71,7 +71,8 @@ def get_order_by_store_id(db: Session, store_id):  # 주문
 
 # 주문 삭제
 def delete_order_by_id(db: Session, order_id: int):
-    order = db.query(Order).filter(Order.id == order_id).update({"is_active": False})
+    order = db.query(Order).filter(
+        Order.id == order_id).update({"is_active": False})
 
     db.commit()
     return Response(status_code=HTTP_204_NO_CONTENT)
