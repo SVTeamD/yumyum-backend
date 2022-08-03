@@ -29,13 +29,13 @@ services:
     build: ./backend
     restart: always
     ports:
-      - 8080:8000
+      - 8000:8000
     command: >
       ash -c "python wait_for_mysql.py  && uvicorn main:app --host 0.0.0.0 --reload"
     volumes:
       - ./backend/:/backend/
     expose:
-      - 8080
+      - 8000
     # env_file:
     #   - ./settings/dev/.env.dev
     networks:
@@ -43,54 +43,54 @@ services:
     depends_on:
       - mysql
 
-  # elasticsearch:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
-  #   container_name: sem_elasticsearch
-  #   # restart: on-failure
-  #   environment:
-  #     - discovery.type=single-node
-  #     - bootstrap.memory_lock=true
-  #     - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
-  #   ulimits:
-  #     memlock:
-  #       soft: -1
-  #       hard: -1
-  #   volumes:
-  #     - ./volumes/elasticsearch:/usr/share/elasticsearch/data
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10k"
-  #       max-file: "10"
-  # logstash:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile-logstash
-  #   container_name: sem_logstash
-  #   # restart: on-failure
-  #   depends_on:
-  #     - mysql
-  #     - elasticsearch
-  #   volumes:
-  #     - ./volumes/logstash/pipeline/:/usr/share/logstash/pipeline/
-  #     - ./volumes/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-  #     - ./volumes/logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
-  #     - ./volumes/logstash/config/queries/:/usr/share/logstash/config/queries/
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10k"
-  #       max-file: "10"
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:7.9.3
-  #   container_name: sem_kibana
-  #   environment:
-  #     - "ELASTICSEARCH_URL=http://elasticsearch:9200"
-  #     - "SERVER_NAME=127.0.0.1"
-  #   ports:
-  #     - 5601:5601
-  #   depends_on:
-  #     - elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+    container_name: sem_elasticsearch
+    # restart: on-failure
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./volumes/elasticsearch:/usr/share/elasticsearch/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10k"
+        max-file: "10"
+  logstash:
+    build:
+      context: .
+      dockerfile: Dockerfile-logstash
+    container_name: sem_logstash
+    # restart: on-failure
+    depends_on:
+      - mysql
+      - elasticsearch
+    volumes:
+      - ./volumes/logstash/pipeline/:/usr/share/logstash/pipeline/
+      - ./volumes/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./volumes/logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+      - ./volumes/logstash/config/queries/:/usr/share/logstash/config/queries/
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10k"
+        max-file: "10"
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.3
+    container_name: sem_kibana
+    environment:
+      - "ELASTICSEARCH_URL=http://elasticsearch:9200"
+      - "SERVER_NAME=127.0.0.1"
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
 
   nginx:
     container_name: proxy_server
@@ -127,22 +127,21 @@ services:
     pid: host
     restart: unless-stopped
 
-  # cadvisor:
-  #   container_name: cadvisor
-  #   image: gcr.io/cadvisor/cadvisor:latest
-  #   volumes:
-  #     - /:/rootfs:ro
-  #     - /var/run:/var/run:rw
-  #     - /sys:/sys:ro
-  #     - /var/lib/docker:/var/lib/docker:ro
-  #   ports:
-  #     - 8080:8080
-  #   expose:
-  #     - 8080
-  #   networks:
-  #     - mynet
-  #   privileged: true
-  #   restart: unless-stopped
+  cadvisor:
+    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - 8080:8080
+    networks:
+      - mynet
+    privileged: true
+    restart: unless-stopped
 
   alertmanager:
     image: prom/alertmanager
