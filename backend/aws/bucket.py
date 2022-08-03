@@ -1,14 +1,14 @@
-from typing import List
-
-import boto3
+from .connection import Connect
 from .config import S3_BUCKET
-from .connection import connect
+from botocore.exceptions import ClientError
 
 def post_bucket(image_file: str, key_name: str):
-    client = connect()
-    client.put_object(
-        Body=image_file, 
-        Bucket=S3_BUCKET,
-        Key=key_name,
-        ContentType="image.jpeg"
-    )
+    connect = Connect()
+    with connect as client:
+        try:
+            client = connect.connect()
+            client.put_object(
+                Body=image_file, Bucket=S3_BUCKET, Key=key_name, ContentType="image.jpeg"
+            )
+        except ClientError as e:
+            print("Error during image upload. {}".format(e.response["Error"]["Code"]))
