@@ -1,0 +1,3 @@
+[submodule "yumyum-frontend"]
+	path = yumyum-frontend
+	url = https://github.com/SVTeamD/yumyum-frontend.git
