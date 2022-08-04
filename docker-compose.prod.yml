@@ -16,6 +16,8 @@ services:
     restart: always
     ports:
       - 3306:3306
+    networks:
+      - mynet
     logging:
       driver: "json-file"
       options:
@@ -27,15 +29,17 @@ services:
     build: ./backend
     restart: always
     ports:
-      - 8080:8000
+      - 8000:8000
     command: >
       ash -c "python wait_for_mysql.py  && uvicorn main:app --host 0.0.0.0 --reload"
     volumes:
       - ./backend/:/backend/
     expose:
-      - 8080
+      - 8000
     # env_file:
     #   - ./settings/dev/.env.dev
+    networks:
+      - mynet
     depends_on:
       - mysql
 
@@ -97,6 +101,8 @@ services:
       - 80:80
     volumes:
       - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - mynet
     depends_on:
       - backend
 
@@ -123,7 +129,7 @@ services:
 
   cadvisor:
     container_name: cadvisor
-    image: google/cadvisor
+    image: gcr.io/cadvisor/cadvisor
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -131,11 +137,24 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
     ports:
-      - 8080:8080
+      - 8081:8080
     networks:
       - mynet
     privileged: true
     restart: unless-stopped
+
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+    networks:
+      - mynet
+    restart: always
+    command:
+      - "--config.file=/etc/alertmanager/config.yml"
+      - "--storage.path=/alertmanager"
 
   prometheus:
     container_name: prometheus

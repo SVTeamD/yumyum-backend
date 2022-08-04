@@ -1,5 +1,5 @@
 global:
-  slack_api_url: "slack_api_url"
+  slack_api_url: "https://hooks.slack.com/services/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"
 
 route:
   receiver: "slack id"
@@ -16,6 +16,6 @@ route:
 receivers:
   - name: "slack id"
     slack_configs:
-      - channel: "channel"
+      - channel: ""
         icon_emoji: ":pig:"
         text: "summary: {{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}"
