@@ -18,7 +18,6 @@ class Order(OrderBase):
 class OrderCreate(OrderBase):
     user_id: int
     store_id: int
-    datetime: datetime
     is_takeout: bool
     cost: int
 

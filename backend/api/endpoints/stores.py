@@ -54,11 +54,17 @@ def get_store_info(store: store_schema.StoreSingleRead, db: Session = Depends(ge
 # 특정 가게 메뉴 조회
 @router.get("/{store_id}/menus", response_model=List[menu_schema.Menu])
 def read_menu_info(
-    store_id, skip: int = 1, limit: int = 10, db: Session = Depends(get_db)
+    store_id, db: Session = Depends(get_db)
 ):
     menus = store_crud.get_store_menu(db, store_id=store_id)
     return menus
 
+@router.get("/{store_id}", response_model=store_schema.StoreRead)
+def read_menu_info(
+    store_id, db: Session = Depends(get_db)
+):
+    menus = store_crud.get_store_single(db, store_id=store_id)
+    return menus
 
 
 # 가게 삭제

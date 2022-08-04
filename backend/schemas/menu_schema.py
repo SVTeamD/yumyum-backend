@@ -8,7 +8,7 @@ class MenuBase(BaseModel):
 
 class Menu(MenuBase):  # 메뉴
     name: str
-    cost: str  # 잠시 str로 수정
+    cost: int
     photo_url: str
     is_active: bool
     is_main_menu: bool
@@ -21,7 +21,7 @@ class MenuCreate(MenuBase):
 class MenusCreate(MenuBase):
     store_id: int
     name: str
-    cost: str
+    cost: int
     photo_url: str
 
 

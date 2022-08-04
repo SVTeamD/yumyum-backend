@@ -25,6 +25,9 @@ def get_store(db: Session) -> List[Store]:  # 가게
     return db.query(Store).filter(Store.is_active == True).all()
 
 
+def get_store_single(db: Session, store_id: int) -> Store:
+    return db.query(Store).filter(Store.id == store_id).filter(Store.is_active == True).first()
+
 async def get_store_by_user(db: Session, store: store_schema.StoreSingleRead):
     store_user = db.query(Store).join(User).filter(User.id == store.user_id).filter(User.is_active == True).first()
     if store_user:
