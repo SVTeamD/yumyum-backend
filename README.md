@@ -1,7 +1,19 @@
 ## **Backend**
 
-This is a backend setup for SVTeamD.  
-전통시장 활성화 플랫폼
+## **Introduction** 
+전통시장에서 불편함이 많으시지 않았나요?
+혹시 전통시장에 가기 전 미리 웹으로 가게가 조회되고 포장을 할 수 있으면 어떨까요?
+
+소개하겠습니다! 장날은 여러분에게 여러 가지 서비스를 제공합니다. 장날은 전통 시장 주문 포장 플랫폼입니다.
+
+<img width="40%" src="https://user-images.githubusercontent.com/82080962/183138809-77984e32-ea99-453a-8c0f-07d5634c0cb3.png"/>
+
+
+1. 손 쉬운 가게 조회: 전통 시장 가게를 미리 조회할 수 있습니다.
+2. 가게 간편 등록: 가게 간판과 메뉴를 찍으면 자동으로 가게를 등록해줍니다.
+3. 먹고 가기와 포장 하기: 전통시장에서도 미리 주문하여 시간단축이 가능합니다.
+
+
 
 <br>
 
@@ -213,7 +225,7 @@ This is a backend setup for SVTeamD.
 | -----| -------|------------------------- |
 |홍성민 | Front-end, Back-End, Devops| [Github](https://github.com/KKodiac)   |
 |김주원 | Front-end, Back-end| [Github](https://github.com/juwon5272)   |
-|김인철 | Front-end, Back-end, Devops| [Github](https://github.com/kimich1218)   |
+|김인철 | Front-end| [Github](https://github.com/kimich1218)   |
 |최현정 | Back-end|[Github](https://github.com/ChoiPilkyu)   |
 |김주희 | Front-end| [Github](https://github.com/edi54)   |
 |한상우 | Back-end,Devops| [Github](https://github.com/sktkddn777)   |
